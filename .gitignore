@@ -1,3 +1,6 @@
 #Ignorar Archivos IntelliJ
 .idea
 
+#Compilaciones
+output
+**/*.class

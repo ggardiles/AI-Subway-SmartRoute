@@ -3,9 +3,10 @@ public class EstacionesMonterrey {
 	//Las coordenadas geográficas se pueden obtener en google maps->boton derecho->¿Qué hay aqui?
 	static AtributosEstacion Talleres = new AtributosEstacion("Talleres","San Bernabé",null,0,0,false,0,"Amarilla",25.754237, -100.365236);
 	static AtributosEstacion SanBernabe = new AtributosEstacion("San Bernabé","Unidad Modelo",null,0,0,false,0,"Amarilla",25.748655, -100.361680);
-	static AtributosEstacion UnidadModelo = new AtributosEstacion("San Bernabé",null,null,0,0,false,0,"Amarilla",25.748655, -100.361680);
+	static AtributosEstacion UnidadModelo = new AtributosEstacion("UnidadModelo","Cuauhtemoc",null,0,0,false,0,"Amarilla",25.738655, -100.351680);
+	static AtributosEstacion Cuauhtemoc = new AtributosEstacion("Cuauhtemoc",null,null,0,0,false,0,"Amarilla",25.728655, -100.341680);
 
-	static AtributosEstacion[] Paradas = {Talleres,SanBernabe,UnidadModelo};
+	static AtributosEstacion[] Paradas = {Talleres,SanBernabe,UnidadModelo,Cuauhtemoc};
 
 	/* Ejemplos Práctica Praga
 	//-----------------Linea Verde(A)---------------------

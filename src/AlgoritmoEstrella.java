@@ -10,8 +10,7 @@ public class AlgoritmoEstrella extends EstacionesMonterrey{
 
 
 
-	public static AtributosEstacion[] AlgoritmoAEstrella(AtributosEstacion salida,AtributosEstacion meta, int modos){
-
+	public static AtributosEstacion[] AlgoritmoAEstrella(AtributosEstacion salida, AtributosEstacion meta, int modos){
 
 		AtributosEstacion actual;
 		boolean metaEnPilaCe=false;
@@ -19,21 +18,24 @@ public class AlgoritmoEstrella extends EstacionesMonterrey{
 		AtributosEstacion antDesarrollada=salida;
 
 		//modo si es transbordo
+
+		//G = coste de una estacion a otra
 		salida.setG(0);
-		//G = coste de una estaci�n a otra
+
+		//H = coste de la distancia entre estaciones
 		salida.setH(distancia(salida,meta));
-		//H = coste de la distancia entre estaciones  
-		//inicializamos desde la salida
+
+		//inicializamos desde la salida (PilaAb -> Pila Abierta, PilaCe -> Pila Cerrada)
 		PilaAb[0]=salida;
 		actual=PilaAb[posSigElemLA];
 		posSigElemLA++;
 
-		while(!metaEnPilaCe && PilaAb[0]!=null){
-			//si es estacion con transbordo
-			if(actual==Florenc || actual==Muzeum || actual== Mustek){
+		while(!metaEnPilaCe && PilaAb[0] != null){
+
+			if(actual.isTransbordo()){  //si es estacion con transbordo
 				desarrollarConDosLinea(actual,antDesarrollada,meta);
-				//si no es estacion con transbordo	
-			}else{
+
+			}else{ //si no es estacion con transbordo
 				desarrollarConUnaLinea(actual,antDesarrollada,meta);
 			}
 
@@ -119,7 +121,7 @@ public class AlgoritmoEstrella extends EstacionesMonterrey{
 	private static int calcularG( AtributosEstacion anterior2,AtributosEstacion anterior,AtributosEstacion parada){
 		int penalizacion=0;
 
-		if( anterior.isTransbordo() && !(anterior2.getLineas()[0].equals(parada.getLineas()[0]))
+		if( anterior.isTransbordo() && !(anterior2.getLineas()[0].equals(parada.getLineas()[0])))
 			penalizacion=10000;
 		return anterior.getG()+distancia(anterior,parada)+penalizacion;
 	}
@@ -161,79 +163,55 @@ public class AlgoritmoEstrella extends EstacionesMonterrey{
 	}
 
 	//hallar el camino recorrido
-	private static AtributosEstacion[] algoritmoRecorrido(AtributosEstacion salida, AtributosEstacion meta){
+    private static AtributosEstacion[] algoritmoRecorrido(AtributosEstacion salida, AtributosEstacion meta) {
 
-		AtributosEstacion predecesor = meta;
-		AtributosEstacion actual=meta;
-		AtributosEstacion siguiente=meta;
-		int aux=1;
-		int caso=1;
-		int caso2=0;
-		AtributosEstacion[] res = new AtributosEstacion[70];
-		res[0]=meta;
-		while(actual.getNombre()!=salida.getNombre()){
+        AtributosEstacion predecesor = meta;
+        AtributosEstacion actual = meta;
+        AtributosEstacion siguiente = meta;
+        int aux = 1;
+        int caso = 1;
+        int caso2 = 0;
 
-			if(actual.getNombre()==Florenc.getNombre()){
-				caso=2;
-				caso2=0;
-			}else if(actual.getNombre()==Mustek.getNombre()){
+        AtributosEstacion[] res = new AtributosEstacion[70];
+        res[0] = meta;
+        while (actual.getNombre() != salida.getNombre()) {
+
+            if (actual.getNombre() == Cuauhtemoc.getNombre()) {
+                caso = 2;
+                caso2 = 0;
+
+			}
+			/*else if(actual.getNombre()==Mustek.getNombre()){
 				caso=2;
 				caso2=1;
 			}else if(actual.getNombre()==Muzeum.getNombre()){
 				caso=2;
 				caso2=2;
 			}
+            */
+                switch (caso) {
 
-			switch(caso){
-
-			case 2://Con dos l�neas
-				boolean hayPredecesor2 = false;
-				AtributosEstacion auxiliar2=null;
-				if(caso2==0){//Florenc
-					for(int i=0; i<posSigElemLC;i++){
-						if(Vltavska.getNombre()==PilaCe[i].getNombre() 
-								&& Vltavska.getNombre()!=predecesor.getNombre()){
-							if(!hayPredecesor2){
-								auxiliar2=PilaCe[i];
-								hayPredecesor2=true;
-							}else if(PilaCe[i].getG()<auxiliar2.getG()){
-								auxiliar2=PilaCe[i];
-							}
-						}
-						if(Hlavni_nadrazi.getNombre()==PilaCe[i].getNombre() 
-								&& Hlavni_nadrazi.getNombre()!=predecesor.getNombre()){
-							if(!hayPredecesor2){
-								auxiliar2=PilaCe[i];
-								hayPredecesor2=true;
-							}else if(PilaCe[i].getG()<auxiliar2.getG()){
-								auxiliar2=PilaCe[i];
-							}
-						}
-						if(Krizikova.getNombre()==PilaCe[i].getNombre() 
-								&& Krizikova.getNombre()!=predecesor.getNombre()){
-							if(!hayPredecesor2){
-								auxiliar2=PilaCe[i];
-								hayPredecesor2=true;
-							}else if(PilaCe[i].getG()<auxiliar2.getG()){
-								auxiliar2=PilaCe[i];
-							}
-						}
-						if(Namesti_republiky.getNombre()==PilaCe[i].getNombre() 
-								&& Namesti_republiky.getNombre()!=predecesor.getNombre()){
-							if(!hayPredecesor2){
-								auxiliar2=PilaCe[i];
-								hayPredecesor2=true;
-							}else if(PilaCe[i].getG()<auxiliar2.getG()){
-								auxiliar2=PilaCe[i];
-							}
-						}
-					}
-					res[aux]=auxiliar2;
-					FinRecorrido++;
-					predecesor=actual;
-					actual=auxiliar2;
-					aux++;
-				}
+                    case 2://Con dos lineas
+                        boolean hayPredecesor2 = false;
+                        AtributosEstacion auxiliar2 = null;
+                        if (caso2 == 0) {//Florenc
+                            for (int i = 0; i < posSigElemLC; i++) {
+                                if (Cuauhtemoc.getNombre() == PilaCe[i].getNombre()
+                                        && Cuauhtemoc.getNombre() != predecesor.getNombre()) {
+                                    if (!hayPredecesor2) {
+                                        auxiliar2 = PilaCe[i];
+                                        hayPredecesor2 = true;
+                                    } else if (PilaCe[i].getG() < auxiliar2.getG()) {
+                                        auxiliar2 = PilaCe[i];
+                                    }
+                                }
+                            }
+                            res[aux] = auxiliar2;
+                            FinRecorrido++;
+                            predecesor = actual;
+                            actual = auxiliar2;
+                            aux++;
+                        }/*
 				if(caso2==1){//Mustek
 					for(int i=0; i<posSigElemLC;i++){
 						if(Namesti_republiky.getNombre()==PilaCe[i].getNombre() 
@@ -324,45 +302,49 @@ public class AlgoritmoEstrella extends EstacionesMonterrey{
 					actual=auxiliar2;
 					aux++;
 				}
-				break;
-			case 1://Con una s�la l�nea
-				for(int i=0;i<posSigElemLC;i++){
-					if(actual.getSigEstacion()[0]==PilaCe[i].getNombre() 
-							&& actual.getSigEstacion()[0]!=predecesor.getNombre()){
-						res[aux]=PilaCe[i];
-						siguiente=PilaCe[i];
-						aux++;
+				*/
+                        break;
+                    case 1://Con una sola linea
+                        for (int i = 0; i < posSigElemLC; i++) {
+                            if (actual.getSigEstacion()[0] == PilaCe[i].getNombre()
+                                    && actual.getSigEstacion()[0] != predecesor.getNombre()) {
+                                res[aux] = PilaCe[i];
+                                siguiente = PilaCe[i];
+                                aux++;
 
-					}
+                            }
 
-					if(actual.getAntEstacion()[0]==PilaCe[i].getNombre()
-							&& actual.getAntEstacion()[0]!=predecesor.getNombre()){
-						res[aux]=PilaCe[i];
-						siguiente=PilaCe[i];
-						aux++;
+                            if (actual.getAntEstacion()[0] == PilaCe[i].getNombre()
+                                    && actual.getAntEstacion()[0] != predecesor.getNombre()) {
+                                res[aux] = PilaCe[i];
+                                siguiente = PilaCe[i];
+                                aux++;
 
-					}
+                            }
 
-				}
-				FinRecorrido++;
+                        }
+                        FinRecorrido++;
 
-				predecesor=actual;
-				actual=siguiente;
-			}
+                        predecesor = actual;
+                        actual = siguiente;
+                }
 
-			caso=1;
-		}
-		return res;
-	}
+                caso = 1;
+            }
+            return res;
+        }
+
 
 	private static void desarrollarConUnaLinea(AtributosEstacion actual, AtributosEstacion antDesarrollada, AtributosEstacion meta){
 
 		boolean encontrado=false;
 		int j=0;
+
 		//busca en la lista de paradas la siguiente estacion 
 		while(!encontrado && actual.getSigEstacion()[0]!=null && j<Paradas.length){
 
-			if(actual.getSigEstacion()[0]==Paradas[j].getNombre() && !enPilaCe(Paradas[j]) && !enPilaAb(Paradas[j])){
+			if(actual.getSigEstacion()[0]==Paradas[j].getNombre() && !enPilaCe(Paradas[j])
+					&& !enPilaAb(Paradas[j])){
 				//una vez encontrada actualiza el coste de G, de la estacion actual a la siguiente encontrada
 				Paradas[j].setG(calcularG(antDesarrollada,actual,Paradas[j]));
 				//actualiza el coste de H (distancia entre estacion encontrada y estacion meta)
@@ -392,9 +374,10 @@ public class AlgoritmoEstrella extends EstacionesMonterrey{
 
 	}
 
+
 	private static void desarrollarConDosLinea(AtributosEstacion actual, AtributosEstacion antDesarrollada, AtributosEstacion meta){
 		int caso=0;
-
+        /*
 		if(actual.getNombre()==Florenc.getNombre()) caso=1;
 		else if(actual.getNombre()==Mustek.getNombre()) caso=2;
 		else if(actual.getNombre()==Muzeum.getNombre()) caso=3;
@@ -479,7 +462,7 @@ public class AlgoritmoEstrella extends EstacionesMonterrey{
 			}
 
 		}
-
+    */
 	}
 
 	//Pila Abierta
