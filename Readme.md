@@ -10,15 +10,20 @@ Hay 4 clases fundamentales:
 
 ### To do tasks:
 
-**1. Refactorización completa del Algoritmo A***
+1. Refactorización completa del Algoritmo A*
+
     - Reducir variables globales al mínimo
     - Eliminar variables locales booleanas de los while, if, switch...
     - Comparaciones de transbordo con la propiedad de AtributoEstacion
-**2. Introducir Estaciones del metro de monterrey**
+    
+2. Introducir Estaciones del metro de monterrey
+
     - Mirar coordenadas en google maps para calcular distancias
     - Introducir el valor boolean isTransbordo para los 2/3 transbordos
     - Meter todas las estaciones en la Lista
-**3. Refactorizar la clase InterfazGrafica (ya tiene el png de metro_monterrey)**
+    
+3. Refactorizar la clase InterfazGrafica (ya tiene el png de metro_monterrey)
+
     - Hay que eliminar las estaciones comentadas y hacerlas coincidir con las estaciones de la clase EstacionesMonterrey
     - Modificar los colores
     - Modificar las coordenadas de las estaciones para que coincidan con la posicion x,y de las estaciones de Monterrey
