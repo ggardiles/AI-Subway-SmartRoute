@@ -17,7 +17,7 @@ public class AlgoritmoEstrella extends EstacionesMonterrey{
 
 		AtributosEstacion antDesarrollada=salida;
 
-		//modo si es transbordo
+		//modo si es isTransbordo
 
 		//G = coste de una estacion a otra
 		salida.setG(0);
@@ -32,10 +32,10 @@ public class AlgoritmoEstrella extends EstacionesMonterrey{
 
 		while(!metaEnPilaCe && PilaAb[0] != null){
 
-			if(actual.isTransbordo()){  //si es estacion con transbordo
+			if(actual.isTransbordo()){  //si es estacion con isTransbordo
 				desarrollarConDosLinea(actual,antDesarrollada,meta);
 
-			}else{ //si no es estacion con transbordo
+			}else{ //si no es estacion con isTransbordo
 				desarrollarConUnaLinea(actual,antDesarrollada,meta);
 			}
 

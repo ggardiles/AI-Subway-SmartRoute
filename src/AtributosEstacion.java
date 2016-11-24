@@ -4,7 +4,7 @@ public class AtributosEstacion {
 	private String[] antEstacion;
 	private int[] tiempoSigEstacion;
 	private int[] tiempoAntEstacion;
-	private boolean transbordo;
+	private boolean isTransbordo;
 	private int tiempoTransbordo;
 	private String[] lineas;
 	private double i;
@@ -17,7 +17,7 @@ public class AtributosEstacion {
 		return nombre;
 	}
 
-	public AtributosEstacion(String nombre, String sigEstacion1, String antEstacion1, int tiempoSigEstacion1, int tiempoAntEstacion1,	boolean transbordo,	int tiempoTransbordo,String linea1,double i,double j){
+	public AtributosEstacion(String nombre, String sigEstacion1, String antEstacion1, int tiempoSigEstacion1, int tiempoAntEstacion1,	boolean isTransbordo,	int tiempoTransbordo,String linea1,double i,double j){
 
 		this.nombre = nombre;
 		String[] a= {sigEstacion1,null,null};
@@ -28,7 +28,7 @@ public class AtributosEstacion {
 		tiempoSigEstacion = b;
 		int[] c = {tiempoAntEstacion1};
 		tiempoAntEstacion = c;
-		this.transbordo = transbordo;
+		this.isTransbordo = isTransbordo;
 		this.tiempoTransbordo = tiempoTransbordo;
 		String[] a3 = {linea1};
 		this.lineas = a3;
@@ -36,7 +36,7 @@ public class AtributosEstacion {
 		this.j=j;
 	}
 
-	public AtributosEstacion(String nombre, String sigEstacion1, String antEstacion1, int tiempoSigEstacion1, int tiempoAntEstacion1,	boolean transbordo,	int tiempoTransbordo,String sigEstacion2, String antEstacion2,
+	public AtributosEstacion(String nombre, String sigEstacion1, String antEstacion1, int tiempoSigEstacion1, int tiempoAntEstacion1,	boolean isTransbordo,	int tiempoTransbordo,String sigEstacion2, String antEstacion2,
 			int tiempoSigEstacion2, int tiempoAntEstacion2,String linea1, String linea2,double i,double j){
 
 		this.nombre = nombre;
@@ -48,7 +48,7 @@ public class AtributosEstacion {
 		tiempoSigEstacion = b;
 		int[] c = {tiempoAntEstacion1,tiempoAntEstacion2};
 		tiempoAntEstacion = c;
-		this.transbordo = transbordo;
+		this.isTransbordo = isTransbordo;
 		this.tiempoTransbordo = tiempoTransbordo;
 		String[] a3 = {linea1,linea2};
 		this.lineas = a3;
@@ -56,7 +56,7 @@ public class AtributosEstacion {
 		this.j=j;
 	}
 
-	public AtributosEstacion(String nombre, String sigEstacion1, String antEstacion1, int tiempoSigEstacion1, int tiempoAntEstacion1,	boolean transbordo,	int tiempoTransbordo, String sigEstacion2, String antEstacion2,
+	public AtributosEstacion(String nombre, String sigEstacion1, String antEstacion1, int tiempoSigEstacion1, int tiempoAntEstacion1,	boolean isTransbordo,	int tiempoTransbordo, String sigEstacion2, String antEstacion2,
 			int tiempoSigEstacion2, int tiempoAntEstacion2, String sigEstacion3, String antEstacion3, int tiempoSigEstacion3, int tiempoAntEstacion3, String linea1, String linea2, String linea3,double i,double j) {
 
 		this.nombre = nombre;
@@ -68,7 +68,7 @@ public class AtributosEstacion {
 		tiempoSigEstacion = b;
 		int[] c = {tiempoAntEstacion1,tiempoAntEstacion2,tiempoAntEstacion3};
 		tiempoAntEstacion = c;
-		this.transbordo = transbordo;
+		this.isTransbordo = isTransbordo;
 		this.tiempoTransbordo = tiempoTransbordo;
 		String[] a3 = {linea1,linea2,linea3};
 		this.lineas = a3;
@@ -106,7 +106,7 @@ public class AtributosEstacion {
 
 
 	public boolean isTransbordo() {
-		return transbordo;
+		return isTransbordo;
 	}
 
 
