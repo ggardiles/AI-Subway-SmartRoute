@@ -1,5 +1,20 @@
 # Proyecto Inteligencia Artificial
 Universidad Politecnica de Madrid
+
+### Comentario sobre Praga vs Monterrey
+
+Esta un poco mal programada la practica de Praga y he creado tres archivos para hacerla bien, 
+creo que nos va a llevar menos tiempo y va a ser más simple. La parte de SWING la podemos rescatar casi entera yo creo 
+porque esa sí que está mejor.
+
+He creado tres clases nuevas que creo que mejoran las anteriores:
+- Estacion: Como AtributoEstacion pero con menos parametros
+- MetroMonterrey: Como EstacionesMonterrey pero suprimiendo toda la creacion de variables por la lista
+- AEstrella: Versión simplificada del A*
+
+Esto tambien podemos hacerlo como opineís, yo creo que puede ser más productivo quizá hacerlo nosotros porque el código del AlgoritmoEstrella esta fatal... yo la verdad que no lo entiendo mucho y si falla va a ser dificil encontrar el fallo.
+
+Pero lo dicho, como querais vosotros!
 ### Formato del proyecto
 Hay 4 clases fundamentales:
 - **AtributosEstación**: Clase POJO donde se definen todas las propiedades de una estación
