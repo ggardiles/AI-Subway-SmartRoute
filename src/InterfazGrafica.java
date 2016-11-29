@@ -15,26 +15,27 @@ import java.awt.Graphics;
 import javax.swing.JTextField;
 //import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.SystemColor;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class InterfazGrafica extends EstacionesMonterrey {
-	private AlgoritmoEstrella metro=new AlgoritmoEstrella();
-
+	private AEstrella metro=new AEstrella();
+	private ArrayList<String> listaParadas = new ArrayList<String>(MetroMonterrey.paradas.keySet());
 	private JFrame InterfazGrafica;
-	public AtributosEstacion Psalida;
-	public AtributosEstacion Pllegada;
-	public AtributosEstacion[] resultado;
-	public JTextArea textArea;
-	public String imp="";
-	public double minutos;
+	private Estacion estacionInicial;
+	private Estacion estacionFinal;
+	private ArrayList<Estacion> resultado;
+	private JTextArea textArea;
+	private String imp="";
+	private double minutos;
 
-	public JPanel dibujo,dibujo2;
-	public String horario;
-	public String tiempo;
-	public String metros;
-	public int modo=0;
+	private JPanel dibujo;
+	private String tiempo;
+	private String metros;
 	private JTextField textField;
-	public int distancia;
+	private double distancia;
 	private JTextField textField_1;
 
 	public static void main(String[] args) {
@@ -62,7 +63,7 @@ public class InterfazGrafica extends EstacionesMonterrey {
 		InterfazGrafica.setBackground(Color.BLUE);
 		InterfazGrafica.setForeground(Color.RED);
 		InterfazGrafica.setFont(new Font("Century Gothic", Font.BOLD, 15));
-		InterfazGrafica.setTitle("Metro de Praga");
+		InterfazGrafica.setTitle("Metro de Monterrey");
 		InterfazGrafica.setBounds(300, 25, 1000, 680);
 		InterfazGrafica.getContentPane().setLayout(null);
 
@@ -73,7 +74,7 @@ public class InterfazGrafica extends EstacionesMonterrey {
 		InterfazGrafica.getContentPane().add(panel); 
 		panel.setLayout(null);
 
-		final JComboBox comboBox = new JComboBox(metro.Paradas);
+		final JComboBox comboBox = new JComboBox(listaParadas.toArray());
 		comboBox.setEditable(true);
 		comboBox.setBackground(SystemColor.textHighlight);
 		comboBox.setForeground(new Color(255, 255, 255));
@@ -95,7 +96,7 @@ public class InterfazGrafica extends EstacionesMonterrey {
 		panel_1.setBounds(230, 10, 217, 76);
 		InterfazGrafica.getContentPane().add(panel_1);
 
-		final JComboBox comboBox_1 = new JComboBox(metro.Paradas);
+		final JComboBox comboBox_1 = new JComboBox(listaParadas.toArray());
 		comboBox_1.setForeground(new Color(255, 255, 255));
 		comboBox_1.setFont(new Font("Century Gothic", Font.BOLD, 12));
 		comboBox_1.setEditable(true);
@@ -118,17 +119,12 @@ public class InterfazGrafica extends EstacionesMonterrey {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				
-				Psalida = (AtributosEstacion) comboBox.getSelectedItem();
-				Pllegada= (AtributosEstacion) comboBox_1.getSelectedItem();
+				estacionInicial = MetroMonterrey.paradas.get(comboBox.getSelectedItem());
+				estacionFinal= MetroMonterrey.paradas.get(comboBox_1.getSelectedItem());
 
-
-				
-				
-
-				resultado=metro.AlgoritmoAEstrella(Psalida, Pllegada,modo);
+				resultado = metro.calcularMejorCamino(estacionInicial, estacionFinal);
 				minutos=metro.getTiempo();
-				distancia=metro.getDistancia();
+				distancia=metro.getDistanciaRecorridaTotal();
 				System.out.println("Distancia" + distancia);
 				Graphics g = dibujo.getGraphics();
 				
@@ -388,8 +384,8 @@ public class InterfazGrafica extends EstacionesMonterrey {
 				metro.nuevaBusqueda();
 				imp="";
 				tiempo="";
-				Psalida=null;
-				Pllegada=null;
+				estacionInicial=null;
+				estacionFinal=null;
 				resultado=null;
 				textArea.setText(imp);
 				textField.setText(tiempo);
