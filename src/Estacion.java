@@ -7,7 +7,7 @@
 public class Estacion {
     private String nombre;
     private int linea;
-    private int[] nearbyIDs;
+    private String[] estacionesConectadas;
     private double latitude;
     private double longitude;
     private boolean isTransbordo;
@@ -16,11 +16,10 @@ public class Estacion {
     private int xPos; //Position in image
     private int yPos;
 
-    public Estacion(String nombre, int linea, int[] nearbyIDs, double latitude, double longitude,
-                    boolean isTransbordo, int gCost, int hCost, int xPos, int yPos) {
+    public Estacion(String nombre, int linea, String[] estacionesConectadas, double latitude, double longitude, boolean isTransbordo, int gCost, int hCost, int xPos, int yPos) {
         this.nombre = nombre;
         this.linea = linea;
-        this.nearbyIDs = nearbyIDs;
+        this.estacionesConectadas = estacionesConectadas;
         this.latitude = latitude;
         this.longitude = longitude;
         this.isTransbordo = isTransbordo;
@@ -46,12 +45,12 @@ public class Estacion {
         this.linea = linea;
     }
 
-    public int[] getnearbyIDs() {
-        return nearbyIDs;
+    public String[] getEstacionesConectadas() {
+        return estacionesConectadas;
     }
 
-    public void setnearbyIDs(int[] nearbyIDs) {
-        this.nearbyIDs = nearbyIDs;
+    public void setEstacionesConectadas(String[] estacionesConectadas) {
+        this.estacionesConectadas = estacionesConectadas;
     }
 
     public double getLatitude() {

@@ -22,7 +22,7 @@ public class AEstrella {
         return calcularMejorCamino(paradaInicial, paradaMeta);
     }
 
-    public double getDistancia(){
+    public double getDistanciaBetweenParadas(Estacion estacionInicio, Estacion estacionFin){
         return 0;
     }
 

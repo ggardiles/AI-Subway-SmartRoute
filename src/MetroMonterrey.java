@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by gabriel on 25/11/16.
  */
@@ -5,12 +8,16 @@
 //Version mejorada del proyecto
 public class MetroMonterrey {
 
-    //Las coordenadas geográficas se pueden obtener en google maps->boton derecho->¿Qué hay aqui?
-    static Estacion[] paradas = {
-            new Estacion("Talleres",1,new int[]{1},25.754237D, -100.365236D,false,0,0,0,0),
-            new Estacion("San Bernabé",1,new int[]{0,2},25.748655, -100.361680,false,0,0,0,0),
-            new Estacion("Unidad Modelo",1,new int[]{1,3},25.738655, -100.351680,false,0,0,0,0),
-            new Estacion("Cuauhtemoc",1,new int[]{2,4},25.748655, -100.361680,false,0,0,0,0)
+    private static final Map<String, Estacion> paradas;
 
-    };
+    static {
+        paradas = new HashMap<String, Estacion>();
+
+        //Linea 1
+        paradas.put("Talleres",     new Estacion("Talleres",1,new String[]{"San Bernabé"},25.754237D, -100.365236D,false,0,0,0,0));
+        paradas.put("San Bernabé",  new Estacion("San Bernabé",1,new String[]{"Talleres", "Unidad Modelo"},25.748655, -100.361680,false,0,0,0,0));
+        paradas.put("Unidad Modelo",new Estacion("Unidad Modelo",1,new String[]{"Talleres","Cuauhtemoc"},25.738655, -100.351680,false,0,0,0,0));
+        paradas.put("Cuauhtemoc",   new Estacion("Cuauhtemoc",1,new String[]{"Unidad Modelo"},25.748655, -100.361680,false,0,0,0,0));
+
+    }
 }
