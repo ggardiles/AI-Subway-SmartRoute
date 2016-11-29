@@ -7,29 +7,14 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
 
 import java.awt.Font;
 import javax.swing.JScrollPane;
 import java.awt.Color;
 import java.awt.Graphics;
-import javax.swing.JCheckBox;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.JTextField;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JFormattedTextField;
 //import org.eclipse.wb.swing.FocusTraversalOnArray;
-import java.awt.Component;
 import java.awt.SystemColor;
-import javax.swing.JScrollBar;
-import javax.swing.JSlider;
-import javax.swing.JList;
-import java.awt.Scrollbar;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.ScrollPane;
 
 
 public class InterfazGrafica extends EstacionesMonterrey {

@@ -14,8 +14,8 @@ public class Imagen extends JPanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 		Image imagen = new ImageIcon(getClass().getResource("metro_monterrey.png")).getImage();
-		g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);  //redimensionado de la imagen ,pintamos desde 0 ,0  hasta la maxima logitud y anchura del panel
-
+		//redimensionado de la imagen ,pintamos desde 0 ,0  hasta la maxima logitud y anchura del panel
+		g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
 	}
 
 }
