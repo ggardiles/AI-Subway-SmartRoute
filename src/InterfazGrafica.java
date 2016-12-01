@@ -15,457 +15,197 @@ import java.awt.Graphics;
 import javax.swing.JTextField;
 //import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.SystemColor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
 public class InterfazGrafica extends EstacionesMonterrey {
-	private AEstrella metro=new AEstrella();
-	private ArrayList<String> listaParadas = new ArrayList<String>(MetroMonterrey.paradas.keySet());
-	private JFrame InterfazGrafica;
-	private Estacion estacionInicial;
-	private Estacion estacionFinal;
-	private ArrayList<Estacion> resultado;
-	private JTextArea textArea;
-	private String imp="";
-	private double minutos;
-
-	private JPanel dibujo;
-	private String tiempo;
-	private String metros;
-	private JTextField textField;
-	private double distancia;
-	private JTextField textField_1;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InterfazGrafica window = new InterfazGrafica();
-					window.InterfazGrafica.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	public InterfazGrafica() {
-		initialize();
-	}
-
-	private void initialize() {
-		InterfazGrafica = new JFrame();
-		InterfazGrafica.getContentPane().setFont(new Font("Century Gothic", Font.BOLD, 15));
-		InterfazGrafica.getContentPane().setBackground(new Color(135, 206, 235));
-		InterfazGrafica.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		InterfazGrafica.setBackground(Color.BLUE);
-		InterfazGrafica.setForeground(Color.RED);
-		InterfazGrafica.setFont(new Font("Century Gothic", Font.BOLD, 15));
-		InterfazGrafica.setTitle("Metro de Monterrey");
-		InterfazGrafica.setBounds(300, 25, 1000, 680);
-		InterfazGrafica.getContentPane().setLayout(null);
-
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(135, 206, 235));
-		panel.setForeground(Color.BLUE);
-		panel.setBounds(0, 10, 217, 76); //Bordes
-		InterfazGrafica.getContentPane().add(panel); 
-		panel.setLayout(null);
-
-		final JComboBox comboBox = new JComboBox(listaParadas.toArray());
-		comboBox.setEditable(true);
-		comboBox.setBackground(SystemColor.textHighlight);
-		comboBox.setForeground(new Color(255, 255, 255));
-		comboBox.setFont(new Font("Century Gothic", Font.BOLD, 12));
-		comboBox.setBounds(25, 37, 182, 28);
-		panel.add(comboBox);
-
-		JLabel lblSeleccionLaEstacion = new JLabel("ORIGEN:");
-		lblSeleccionLaEstacion.setFont(new Font("Century Gothic", Font.BOLD, 15));
-		lblSeleccionLaEstacion.setForeground(new Color(0, 0, 0));
-		lblSeleccionLaEstacion.setBounds(25, 11, 104, 15);
-		panel.add(lblSeleccionLaEstacion);
-		//panel.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{comboBox, lblSeleccionLaEstacion}));
-
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(135, 206, 235));
-		panel_1.setForeground(new Color(135, 206, 250));
-		panel_1.setLayout(null);
-		panel_1.setBounds(230, 10, 217, 76);
-		InterfazGrafica.getContentPane().add(panel_1);
-
-		final JComboBox comboBox_1 = new JComboBox(listaParadas.toArray());
-		comboBox_1.setForeground(new Color(255, 255, 255));
-		comboBox_1.setFont(new Font("Century Gothic", Font.BOLD, 12));
-		comboBox_1.setEditable(true);
-		comboBox_1.setBackground(SystemColor.textHighlight);
-		comboBox_1.setBounds(10, 41, 197, 28);
-		panel_1.add(comboBox_1);
-
-		JLabel label = new JLabel("DESTINO:");
-		label.setFont(new Font("Century Gothic", Font.BOLD, 14));
-		label.setBounds(10, 11, 77, 19);
-		panel_1.add(label);
-
-		JFrame ventana=new JFrame();
-
-
-		JButton btnNewButton = new JButton("Hallar ruta");
-		btnNewButton.setForeground(Color.WHITE);
-		btnNewButton.setFont(new Font("Century Gothic", Font.BOLD, 12));
-		btnNewButton.setBackground(SystemColor.textHighlight);
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				estacionInicial = MetroMonterrey.paradas.get(comboBox.getSelectedItem());
-				estacionFinal= MetroMonterrey.paradas.get(comboBox_1.getSelectedItem());
-
-				resultado = metro.calcularMejorCamino(estacionInicial, estacionFinal);
-				minutos=metro.getTiempo();
-				distancia=metro.getDistanciaRecorridaTotal();
-				System.out.println("Distancia" + distancia);
-				Graphics g = dibujo.getGraphics();
-				
-				int i=0;
-				while(i<resultado.length){
-
-					imp=imp+resultado[i]+"\n";
-
-					//LINEA A
-					g.setColor(Color.GREEN);
-
-					if(resultado[i]==Talleres){
-						g.fillOval(230, 165, 15, 15);}
-					g.setColor(Color.GREEN);
-
-					if(resultado[i]==SanBernabe){
-						g.fillOval(230, 165, 15, 15);}
-					g.setColor(Color.GREEN);
-
-					if(resultado[i]==UnidadModelo){
-						g.fillOval(230, 165, 15, 15);}
-					g.setColor(Color.GREEN);
-
-					/* Praga
-					if(resultado[i]==Dejvicka){
-						g.fillOval(230, 165, 15, 15);}
-					g.setColor(Color.GREEN);
-
-					if(resultado[i]==Hradcanska){
-						g.fillOval(257, 175, 15, 15);}
-					g.setColor(Color.GREEN);
-
-					if(resultado[i]==Malostranska){
-						g.fillOval(280, 195, 15, 15);}
-					g.setColor(Color.GREEN);
-
-					if(resultado[i]==Staromestska){
-						g.fillOval(315,207,  15, 15);}
-					
-					g.setColor(Color.GREEN);
-
-					if(resultado[i]==Namesti_Miru){
-						g.fillOval(400,292, 15, 15);}
-					g.setColor(Color.GREEN);
-
-					if(resultado[i]==Jiriho_z_Podebrad){
-						g.fillOval(442,292, 15, 15);}	
-					g.setColor(Color.GREEN);
-
-					if(resultado[i]==Flora){
-						g.fillOval(480,292, 15, 15);}	
-					g.setColor(Color.GREEN);
-
-					if(resultado[i]==Zeliveskeho){
-						g.fillOval(512,292, 15, 15);}	
-					g.setColor(Color.GREEN);
-
-					if(resultado[i]==Strasnicka){
-						g.fillOval(552,322, 15, 15);}	
-					g.setColor(Color.GREEN);
-
-					if(resultado[i]==Skalka){
-						g.fillOval(590,355, 15, 15);}	
-
-					//TRANSBORDO LINEA A
-					g.setColor(Color.BLACK);
-
-					if(resultado[i]==Mustek){
-						g.fillOval(340,230,20, 15);}	
-
-					if(resultado[i]==Muzeum){
-						g.fillOval(372,260, 20, 15);}						
-
-					//LINEA B
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Cerny_most){
-						g.fillOval(700,175,18,18);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Rajska_zahrada){
-						g.fillOval(660,175,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Hloubetin){
-						g.fillOval(610,175,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Kolbenova){
-						g.fillOval(587,153,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Vysocanska){
-						g.fillOval(551,153,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Ceskomoravska){
-						g.fillOval(525,185,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Palmovka){
-						g.fillOval(495,185,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Invalidovna){
-						g.fillOval(450,200,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Krizikova){
-						g.fillOval(418,200,15,15);}
-
-					//AQUI IRIRA EL TRANSBORDO DE FLORENC
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Namesti_republiky){
-						g.fillOval(355,213,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Narodni_trida){
-						g.fillOval(315,250,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Karlovo_namesti){
-						g.fillOval(317,290,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Andel){
-						g.fillOval(275,320,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Smichovske_nadrazi){
-						g.fillOval(275,350,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Radlicka){
-						g.fillOval(246,385,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Jinonice){
-						g.fillOval(212,385,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Nove_Butovice){
-						g.fillOval(177,387,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Hurka){
-						g.fillOval(147,387,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Luziny){
-						g.fillOval(115,410,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Luka){
-						g.fillOval(85,410,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Stodulky){
-						g.fillOval(50,410,15,15);}
-					g.setColor(Color.YELLOW);
-
-					if(resultado[i]==Zlicin){
-						g.fillOval(25,410,15,15);}
-
-					//TRANSBORDO LINEA B
-					g.setColor(Color.BLACK);
-
-					if(resultado[i]==Florenc){
-						g.fillOval(372,194,20,15);}				
-
-					//LINEA C	
-					g.setColor(Color.RED);
-
-					if(resultado[i]==Ladvi){
-						g.fillOval(460,15,15,15);}
-					g.setColor(Color.RED);
-
-					if(resultado[i]==Kobylisy){
-						g.fillOval(404,13,15,15);}	
-
-					g.setColor(Color.RED);
-
-
-					if(resultado[i]==Nadrazi_Holesovice){
-						g.fillOval(372,110,15,15);}	
-					g.setColor(Color.RED);
-
-					if(resultado[i]==Vltavska){
-						g.fillOval(372,150,15,15);}	
-					g.setColor(Color.RED);
-
-					if(resultado[i]==Hlavni_nadrazi){
-						g.fillOval(372,223,15,15);}	
-					g.setColor(Color.RED);
-
-					if(resultado[i]==IP_Pavlova){
-						g.fillOval(372,294,15,15);}	
-					g.setColor(Color.RED);
-
-					if(resultado[i]==Vysehrad){
-						g.fillOval(372,355,15,15);}	
-					g.setColor(Color.RED);
-
-					if(resultado[i]==Prazskeho_povstani){
-						g.fillOval(372,390,15,15);}	
-					g.setColor(Color.RED);
-
-					if(resultado[i]==Pankrac){
-						g.fillOval(392,422,15,15);}	
-					g.setColor(Color.RED);
-
-					if(resultado[i]==Budejovicka){
-						g.fillOval(420,450,15,15);}	
-					g.setColor(Color.RED);
-
-					if(resultado[i]==Kacerov){
-						g.fillOval(455,480,15,15);}	
-					g.setColor(Color.RED);
-
-					if(resultado[i]==Roztyly){
-						g.fillOval(495,500,15,15);}	
-
-					if(resultado[i]==Chodov){
-						g.fillOval(535,500,15,15);}	
-
-					if(resultado[i]==Opatov){
-						g.fillOval(580,500,15,15);}	
-
-					if(resultado[i]==Haje){
-						g.fillOval(615,500,15,15);}	
-
-					*/
-					i++;
-				}
-				textArea.setText(imp);
-				tiempo=Double.toString(minutos)+" minutos ";
-				textField.setText(tiempo);
-				metros=Integer.toString(distancia)+" metros ";
-				textField_1.setText(metros);
-
-			}
-
-
-		});
-
-		btnNewButton.setBounds(455, 50, 117, 25);
-		InterfazGrafica.getContentPane().add(btnNewButton);
-
-		JButton btnNewButton_1 = new JButton("Nueva b�squeda");
-		btnNewButton_1.setForeground(Color.WHITE);
-		btnNewButton_1.setBackground(SystemColor.textHighlight);
-		btnNewButton_1.setFont(new Font("Century Gothic", Font.BOLD, 12));
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				metro.nuevaBusqueda();
-				imp="";
-				tiempo="";
-				estacionInicial=null;
-				estacionFinal=null;
-				resultado=null;
-				textArea.setText(imp);
-				textField.setText(tiempo);
-				dibujo.repaint();
-
-			}
-		});
-		btnNewButton_1.setBounds(582, 50, 148, 25);
-		InterfazGrafica.getContentPane().add(btnNewButton_1);
-		textArea = new JTextArea();
-		textArea.setForeground(Color.WHITE);
-		textArea.setBackground(SystemColor.textHighlight);
-		textArea.setFont(new Font("Century Gothic", Font.BOLD, 15));
-		JScrollPane scrollPane = new JScrollPane(textArea);
-		scrollPane.setEnabled(false);
-		scrollPane.setBounds(750, 50, 217, 300);
-		InterfazGrafica.getContentPane().add(scrollPane);
-				
-				InterfazGrafica.getContentPane().add(scrollPane);
-				JPanel panel_4 = new JPanel();
-				panel_4.setLayout(null);
-				panel_4.setForeground(new Color(135, 206, 250));
-				panel_4.setBackground(new Color(135, 206, 235));
-				panel_4.setBounds(740, 10, 92, 48);
-				InterfazGrafica.getContentPane().add(panel_4);
-				
-				JLabel label_1 = new JLabel("PARADAS:");
-				label_1.setFont(new Font("Century Gothic", Font.BOLD, 14));
-				label_1.setBounds(10, 11, 77, 19);
-				panel_4.add(label_1);
-				
-				JScrollPane scrollPane_1 = new JScrollPane();
-				scrollPane_1.setBounds(891, 198, -91, -105);
-				InterfazGrafica.getContentPane().add(scrollPane_1);
-				
-				dibujo=new Imagen();
-				dibujo.setBounds(0, 97, 730, 546);
-				InterfazGrafica.getContentPane().add(dibujo);
-				dibujo.setBackground(Color.WHITE);
-				
-				JPanel panel_5 = new JPanel();
-				panel_5.setLayout(null);
-				panel_5.setForeground(Color.BLUE);
-				panel_5.setBackground(new Color(135, 206, 235));
-				panel_5.setBounds(740, 421, 217, 76);
-				InterfazGrafica.getContentPane().add(panel_5);
-				
-				JLabel lblTiempoEstimado = new JLabel("Tiempo estimado:");
-				lblTiempoEstimado.setForeground(Color.BLACK);
-				lblTiempoEstimado.setFont(new Font("Century Gothic", Font.BOLD, 15));
-				lblTiempoEstimado.setBounds(25, 11, 162, 15);
-				panel_5.add(lblTiempoEstimado);
-				
-						textField = new JTextField();
-						textField.setBackground(SystemColor.textHighlight);
-						textField.setForeground(Color.WHITE);
-						textField.setFont(new Font("Century Gothic", Font.BOLD, 15));
-						textField.setBounds(10, 44, 202, 21);
-						panel_5.add(textField);
-						textField.setColumns(10);
-						
-						textField_1 = new JTextField();
-						textField_1.setForeground(Color.WHITE);
-						textField_1.setFont(new Font("Century Gothic", Font.BOLD, 15));
-						textField_1.setColumns(10);
-						textField_1.setBackground(SystemColor.textHighlight);
-						textField_1.setBounds(750, 539, 202, 21);
-						InterfazGrafica.getContentPane().add(textField_1);
-						
-						JLabel lblDistanciaRecorrido = new JLabel("Distancia recorrida:");
-						lblDistanciaRecorrido.setForeground(Color.BLACK);
-						lblDistanciaRecorrido.setFont(new Font("Century Gothic", Font.BOLD, 15));
-						lblDistanciaRecorrido.setBounds(750, 513, 162, 15);
-						InterfazGrafica.getContentPane().add(lblDistanciaRecorrido);
-					
-			
-
-
-							
-							
-							
-	}
+    private ArrayList<String> listaParadas = new ArrayList<String>(MetroMonterrey.paradas.keySet());
+    private JFrame InterfazGrafica;
+    private JTextArea textAreaParadas;
+
+    private JPanel dibujo;
+    private JTextField textTiempo;
+    private JTextField textDistancia;
+
+    private static final int RADIUS = 15;
+    private static final Color BGCOLOR = Color.LIGHT_GRAY;//new Color(135, 206, 235);//Color.LIGHT_GRAY;
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(()->{
+            try {
+                InterfazGrafica window = new InterfazGrafica();
+                window.InterfazGrafica.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public InterfazGrafica() {
+        initialize();
+    }
+
+    private void initialize() {
+        InterfazGrafica = new JFrame();
+        InterfazGrafica.getContentPane().setFont(new Font("Century Gothic", Font.BOLD, 15));
+        InterfazGrafica.getContentPane().setBackground(BGCOLOR);
+        InterfazGrafica.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        InterfazGrafica.setFont(new Font("Century Gothic", Font.BOLD, 15));
+        InterfazGrafica.setTitle("Metro de Monterrey");
+        InterfazGrafica.setBounds(300, 25, 1000, 680);
+        InterfazGrafica.getContentPane().setLayout(null);
+
+        JPanel panelOrigen = new JPanel();
+        panelOrigen.setBackground(BGCOLOR);
+        panelOrigen.setBounds(0, 10, 217, 76); //Bordes
+        InterfazGrafica.getContentPane().add(panelOrigen);
+        panelOrigen.setLayout(null);
+
+        final JComboBox comboBoxOrigen = new JComboBox(listaParadas.toArray());
+        comboBoxOrigen.setEditable(true);
+        comboBoxOrigen.setBackground(SystemColor.textHighlight);
+        comboBoxOrigen.setForeground(Color.WHITE);
+        comboBoxOrigen.setFont(new Font("Century Gothic", Font.BOLD, 12));
+        comboBoxOrigen.setBounds(25, 37, 182, 28);
+        panelOrigen.add(comboBoxOrigen);
+
+        JLabel labelOrigen = new JLabel("ORIGEN:");
+        labelOrigen.setFont(new Font("Century Gothic", Font.BOLD, 15));
+        labelOrigen.setForeground(Color.BLACK);
+        labelOrigen.setBounds(25, 11, 104, 15);
+        panelOrigen.add(labelOrigen);
+
+        JPanel panelDestino = new JPanel();
+        panelDestino.setBackground(BGCOLOR);
+        panelDestino.setForeground(Color.WHITE);
+        panelDestino.setLayout(null);
+        panelDestino.setBounds(230, 10, 217, 76);
+        InterfazGrafica.getContentPane().add(panelDestino);
+
+        final JComboBox comboBoxDestino = new JComboBox(listaParadas.toArray());
+        comboBoxDestino.setForeground(Color.WHITE);
+        comboBoxDestino.setFont(new Font("Century Gothic", Font.BOLD, 12));
+        comboBoxDestino.setEditable(true);
+        comboBoxDestino.setBackground(SystemColor.textHighlight);
+        comboBoxDestino.setBounds(10, 41, 197, 28);
+        panelDestino.add(comboBoxDestino);
+
+        JLabel labelDestino = new JLabel("DESTINO:");
+        labelDestino.setFont(new Font("Century Gothic", Font.BOLD, 14));
+        labelDestino.setBounds(10, 11, 77, 19);
+        panelDestino.add(labelDestino);
+
+        JButton buttonHallarRuta = new JButton("Hallar ruta");
+        buttonHallarRuta.setForeground(Color.BLACK);
+        buttonHallarRuta.setFont(new Font("Century Gothic", Font.BOLD, 12));
+        buttonHallarRuta.setBackground(Color.GREEN);
+        buttonHallarRuta.setBounds(455, 50, 117, 25);
+        buttonHallarRuta.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                Graphics g = dibujo.getGraphics();
+                Estacion estacionInicial = MetroMonterrey.paradas.get(comboBoxOrigen.getSelectedItem());
+                Estacion estacionFinal= MetroMonterrey.paradas.get(comboBoxDestino.getSelectedItem());
+
+                AEstrella aEstrella = new AEstrella(estacionInicial, estacionFinal);
+                ArrayList<Estacion> estacionesOptimas = aEstrella.calcularMejorCamino();
+                if (estacionesOptimas == null){
+                    System.out.println("Empty estacionesOptimas");
+                    return;
+                }
+                double tiempoTotal = aEstrella.getTiempoRecorridoTotal();
+                double distanciaTotal = aEstrella.getDistanciaRecorridaTotal();
+                String imp = "";
+
+                for (Estacion i : estacionesOptimas){
+                    imp += i.getNombre() + "\n";
+                    g.setColor(Color.YELLOW);
+                    if (i.getLinea() == 2)
+                        g.setColor(Color.GREEN);
+                    else if(i.getLinea() == 3)
+                        g.setColor(Color.PINK);
+
+                    g.fillOval(i.getxPos(), i.getyPos(), RADIUS, RADIUS);
+                }
+                textAreaParadas.setText(imp);
+                textTiempo.setText(String.format("%.2f minutos", tiempoTotal));
+                textDistancia.setText(String.format("%.2f metros", distanciaTotal));
+            }
+        });
+
+        InterfazGrafica.getContentPane().add(buttonHallarRuta);
+
+        textAreaParadas = new JTextArea();
+        textAreaParadas.setForeground(Color.WHITE);
+        textAreaParadas.setBackground(SystemColor.textHighlight);
+        textAreaParadas.setFont(new Font("Century Gothic", Font.BOLD, 15));
+        JScrollPane scrollPaneParadas = new JScrollPane(textAreaParadas);
+        scrollPaneParadas.setEnabled(false);
+        scrollPaneParadas.setBounds(750, 75, 217, 300);
+        InterfazGrafica.getContentPane().add(scrollPaneParadas);
+
+        JPanel panelParadas = new JPanel();
+        panelParadas.setLayout(null);
+        panelParadas.setForeground(BGCOLOR);
+        panelParadas.setBackground(BGCOLOR);
+        panelParadas.setBounds(740, 10, 92, 48);
+        InterfazGrafica.getContentPane().add(panelParadas);
+
+        JLabel labelParadas = new JLabel("PARADAS:");
+        labelParadas.setFont(new Font("Century Gothic", Font.BOLD, 14));
+        labelParadas.setBounds(10, 15, 200, 20);
+        panelParadas.add(labelParadas);
+
+        dibujo=new Imagen();
+        dibujo.setBounds(0, 97, 730, 546);
+        dibujo.setBackground(Color.WHITE);
+        dibujo.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                double x = e.getX()-5;
+                double y = e.getY()-5;
+                System.out.println(String.format("x: %.1f    y:  %.1f",x,y));
+            }
+        });
+        InterfazGrafica.getContentPane().add(dibujo);
+
+
+        JPanel panel_5 = new JPanel();
+        panel_5.setLayout(null);
+        panel_5.setForeground(Color.BLUE);
+        panel_5.setBackground(BGCOLOR);
+        panel_5.setBounds(740, 421, 217, 76);
+        InterfazGrafica.getContentPane().add(panel_5);
+
+        JLabel lblTiempoEstimado = new JLabel("Tiempo estimado:");
+        lblTiempoEstimado.setForeground(Color.BLACK);
+        lblTiempoEstimado.setFont(new Font("Century Gothic", Font.BOLD, 15));
+        lblTiempoEstimado.setBounds(10, 11, 162, 15);
+        panel_5.add(lblTiempoEstimado);
+
+        textTiempo = new JTextField();
+        textTiempo.setBackground(SystemColor.textHighlight);
+        textTiempo.setForeground(Color.WHITE);
+        textTiempo.setFont(new Font("Century Gothic", Font.BOLD, 15));
+        textTiempo.setBounds(10, 44, 202, 21);
+        panel_5.add(textTiempo);
+        textTiempo.setColumns(10);
+
+        textDistancia = new JTextField();
+        textDistancia.setForeground(Color.WHITE);
+        textDistancia.setFont(new Font("Century Gothic", Font.BOLD, 15));
+        textDistancia.setColumns(10);
+        textDistancia.setBackground(SystemColor.textHighlight);
+        textDistancia.setBounds(750, 539, 202, 21);
+        InterfazGrafica.getContentPane().add(textDistancia);
+
+        JLabel lblDistanciaRecorrido = new JLabel("Distancia recorrida:");
+        lblDistanciaRecorrido.setForeground(Color.BLACK);
+        lblDistanciaRecorrido.setFont(new Font("Century Gothic", Font.BOLD, 15));
+        lblDistanciaRecorrido.setBounds(750, 513, 162, 15);
+        InterfazGrafica.getContentPane().add(lblDistanciaRecorrido);
+    }
 }

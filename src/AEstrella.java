@@ -10,7 +10,7 @@ import java.util.HashMap;
  *
  * Al instanciarlo con un constructor se introducen las paradas inciales y finales
  */
-public class AEstrella {
+public class AEstrella extends EstacionesMonterrey {
 
     private double gCost = 0;
     private HashMap<Double, Estacion> listaAbierta;
@@ -18,6 +18,8 @@ public class AEstrella {
     private Estacion paradaInicial;
     private Estacion paradaMeta;
 
+    public AEstrella(){
+    }
 
     public AEstrella(Estacion paradaInicial, Estacion paradaMeta) {
 
@@ -82,7 +84,12 @@ public class AEstrella {
 
         //TODO - Implementar A*
 
-        return null;
+        return new ArrayList<Estacion>(){{
+            add(MetroMonterrey.paradas.get("Talleres"));
+            add(MetroMonterrey.paradas.get("San Bernabé"));
+            add(MetroMonterrey.paradas.get("Unidad Modelo"));
+            add(MetroMonterrey.paradas.get("Cuauhtemoc"));
+        }};
     }
 
 

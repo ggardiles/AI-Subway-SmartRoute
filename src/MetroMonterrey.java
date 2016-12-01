@@ -9,10 +9,10 @@ import java.util.Map;
 public class MetroMonterrey {
 
     public static HashMap<String, Estacion> paradas = new HashMap<String, Estacion>(){{
-        put("Talleres",     new Estacion("Talleres",1,new String[]{"San Bernabé"},25.754237D, -100.365236D,false,0,0,0,0));
-        put("San Bernabé",  new Estacion("San Bernabé",1,new String[]{"Talleres", "Unidad Modelo"},25.748655, -100.361680,false,0,0,0,0));
-        put("Unidad Modelo",new Estacion("Unidad Modelo",1,new String[]{"Talleres","Cuauhtemoc"},25.738655, -100.351680,false,0,0,0,0));
-        put("Cuauhtemoc",   new Estacion("Cuauhtemoc",1,new String[]{"Unidad Modelo"},25.748655, -100.361680,false,0,0,0,0));
+        put("Talleres",     new Estacion("Talleres",1,new String[]{"San Bernabé"},25.754237D, -100.365236D,false,0,0,100,61));
+        put("San Bernabé",  new Estacion("San Bernabé",1,new String[]{"Talleres", "Unidad Modelo"},25.748655, -100.361680,false,0,0,143,111));
+        put("Unidad Modelo",new Estacion("Unidad Modelo",1,new String[]{"Talleres","Cuauhtemoc"},25.738655, -100.351680,false,0,0,173,141));
+        put("Cuauhtemoc",   new Estacion("Cuauhtemoc",1,new String[]{"Unidad Modelo"},25.748655, -100.361680,false,0,0,350,357));
     }};
 
 }
