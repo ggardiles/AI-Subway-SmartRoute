@@ -20,6 +20,7 @@ import java.awt.event.MouseEvent;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 
 public class InterfazGrafica extends EstacionesMonterrey {
@@ -27,7 +28,7 @@ public class InterfazGrafica extends EstacionesMonterrey {
     private JFrame InterfazGrafica;
     private JTextArea textAreaParadas;
 
-    private JPanel dibujo;
+    private Imagen dibujo = new Imagen();
     private JTextField textTiempo;
     private JTextField textDistancia;
 
@@ -106,7 +107,6 @@ public class InterfazGrafica extends EstacionesMonterrey {
         buttonHallarRuta.setBounds(455, 50, 117, 25);
         buttonHallarRuta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                Graphics g = dibujo.getGraphics();
                 Estacion estacionInicial = MetroMonterrey.paradas.get(comboBoxOrigen.getSelectedItem());
                 Estacion estacionFinal= MetroMonterrey.paradas.get(comboBoxDestino.getSelectedItem());
 
@@ -118,19 +118,16 @@ public class InterfazGrafica extends EstacionesMonterrey {
                 }
                 double tiempoTotal = aEstrella.getTiempoRecorridoTotal();
                 double distanciaTotal = aEstrella.getDistanciaRecorridaTotal();
-                String imp = "";
+                dibujo.dibujarPuntosCamino(estacionesOptimas);
 
-                for (Estacion i : estacionesOptimas){
-                    imp += i.getNombre() + "\n";
-                    g.setColor(Color.YELLOW);
-                    if (i.getLinea() == 2)
-                        g.setColor(Color.GREEN);
-                    else if(i.getLinea() == 3)
-                        g.setColor(Color.PINK);
-
-                    g.fillOval(i.getxPos(), i.getyPos(), RADIUS, RADIUS);
+                String msg = "";
+                for (Estacion estacion : estacionesOptimas) {
+                    if (estacion != null) {
+                        msg += estacion.getNombre() + "\n";
+                    }
                 }
-                textAreaParadas.setText(imp);
+
+                textAreaParadas.setText(msg);
                 textTiempo.setText(String.format("%.2f minutos", tiempoTotal));
                 textDistancia.setText(String.format("%.2f metros", distanciaTotal));
             }
@@ -159,17 +156,9 @@ public class InterfazGrafica extends EstacionesMonterrey {
         labelParadas.setBounds(10, 15, 200, 20);
         panelParadas.add(labelParadas);
 
-        dibujo=new Imagen();
+        //dibujo=new Imagen();
         dibujo.setBounds(0, 97, 730, 546);
         dibujo.setBackground(Color.WHITE);
-        dibujo.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                double x = e.getX()-5;
-                double y = e.getY()-5;
-                System.out.println(String.format("x: %.1f    y:  %.1f",x,y));
-            }
-        });
         InterfazGrafica.getContentPane().add(dibujo);
 
 

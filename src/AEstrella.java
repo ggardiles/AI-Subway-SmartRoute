@@ -83,12 +83,15 @@ public class AEstrella extends EstacionesMonterrey {
         this.listaAbierta.put(gDistance+hDistance, paradaInicial);
 
         //TODO - Implementar A*
-
+        // Este return era solo para probar la interfaz gráfica
         return new ArrayList<Estacion>(){{
             add(MetroMonterrey.paradas.get("Talleres"));
             add(MetroMonterrey.paradas.get("San Bernabé"));
             add(MetroMonterrey.paradas.get("Unidad Modelo"));
             add(MetroMonterrey.paradas.get("Cuauhtemoc"));
+            add(MetroMonterrey.paradas.get("Sendero"));
+            add(MetroMonterrey.paradas.get("Regina"));
+            add(MetroMonterrey.paradas.get("Conchello"));
         }};
     }
 

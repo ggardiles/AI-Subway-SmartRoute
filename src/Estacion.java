@@ -8,20 +8,16 @@ public class Estacion {
     private String nombre;
     private int linea;
     private String[] estacionesConectadas;
-    private double latitude;
-    private double longitude;
     private boolean isTransbordo;
     private int gCost;
     private int hCost;
     private int xPos; //Position in image
     private int yPos;
 
-    public Estacion(String nombre, int linea, String[] estacionesConectadas, double latitude, double longitude, boolean isTransbordo, int gCost, int hCost, int xPos, int yPos) {
+    public Estacion(String nombre, int linea, String[] estacionesConectadas, boolean isTransbordo, int gCost, int hCost, int xPos, int yPos) {
         this.nombre = nombre;
         this.linea = linea;
         this.estacionesConectadas = estacionesConectadas;
-        this.latitude = latitude;
-        this.longitude = longitude;
         this.isTransbordo = isTransbordo;
         this.gCost = gCost;
         this.hCost = hCost;
@@ -51,22 +47,6 @@ public class Estacion {
 
     public void setEstacionesConectadas(String[] estacionesConectadas) {
         this.estacionesConectadas = estacionesConectadas;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     public boolean isTransbordo() {
