@@ -19,12 +19,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
 
 public class InterfazGrafica extends EstacionesMonterrey {
-    private ArrayList<String> listaParadas = new ArrayList<String>(MetroMonterrey.paradas.keySet());
+    private ArrayList<String> listaParadas = new ArrayList<>(MetroMonterrey.paradas.keySet());
     private JFrame InterfazGrafica;
     private JTextArea textAreaParadas;
 
@@ -47,6 +49,7 @@ public class InterfazGrafica extends EstacionesMonterrey {
     }
 
     public InterfazGrafica() {
+        Collections.sort(listaParadas);
         initialize();
     }
 
