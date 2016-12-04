@@ -36,15 +36,18 @@ public class AEstrella extends EstacionesMonterrey {
      *
      * @param estacionInicio
      * @param estacionFin
-     * @return Tiempo recorrido entre dos estaciones específicas
+     * @return Tiempo recorrido entre dos estaciones específicas (consecutivas)
      */
     public double getDistanciaEntreParadas(Estacion estacionInicio, Estacion estacionFin){
-        return 0;
+        double distanciaI = (estacionInicio.getxPos()-estacionFin.getxPos()) * 111145.91;
+        double distanciaJ = (estacionInicio.getyPos()-estacionFin.getyPos()) * 78254.86;
+        return (int) Math.sqrt(Math.pow(distanciaI, 2) + Math.pow(distanciaJ,2));
     }
 
     /**
      * Método que calcula el tiempo que se tarda entre paradas
      * (recorrido + espera en estaciones intermedias)
+     * Estimación del tiempo: 115 segundos cada 1000 metros recorridos y 180 segundos por transbordo
      * @param estacionInicio
      * @param estacionFin
      * @return
