@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Created by gabriel on 25/11/16.
@@ -15,8 +16,11 @@ public class AEstrella extends EstacionesMonterrey {
     private double gCost = 0;
     private HashMap<Double, Estacion> listaAbierta;
     private HashMap<Double, Estacion> listaCerrada;
+    private LinkedList<Estacion> caminoMin;
     private Estacion paradaInicial;
     private Estacion paradaMeta;
+    private double segkm = 115; //segundos en recorrer 1 km
+    private double segTransbordo; //segundos que gastamos en un transbordo
 
     public AEstrella(){
     }
@@ -26,6 +30,7 @@ public class AEstrella extends EstacionesMonterrey {
         // Crear Listas cerrada y abierta
         this.listaCerrada = new HashMap<>();
         this.listaAbierta = new HashMap<>();
+        this.caminoMin = new LinkedList<>();
 
         // Guardar estaciones inicio y fin
         this.paradaInicial = paradaInicial;
@@ -36,7 +41,7 @@ public class AEstrella extends EstacionesMonterrey {
      *
      * @param estacionInicio
      * @param estacionFin
-     * @return Tiempo recorrido entre dos estaciones específicas (consecutivas)
+     * @return Kms recorrido entre dos estaciones específicas
      */
     public double getDistanciaEntreParadas(Estacion estacionInicio, Estacion estacionFin){
         double distanciaI = (estacionInicio.getxPos()-estacionFin.getxPos()) * 111145.91;
@@ -47,13 +52,18 @@ public class AEstrella extends EstacionesMonterrey {
     /**
      * Método que calcula el tiempo que se tarda entre paradas
      * (recorrido + espera en estaciones intermedias)
-     * Estimación del tiempo: 115 segundos cada 1000 metros recorridos y 180 segundos por transbordo
+     * Estimación del tiempo: 115 segundos cada 1 km recorridos y 180 segundos por transbordo
      * @param estacionInicio
      * @param estacionFin
-     * @return
+     * @return tiempo en segundos
      */
     public double getTiempoEntreParadas(Estacion estacionInicio, Estacion estacionFin){
-        return 0.0;
+        if (estacionInicio.isTransbordo()){
+            return (getDistanciaEntreParadas(estacionInicio,estacionFin) * segkm) + segTransbordo;
+        }
+        else{
+            return getDistanciaEntreParadas(estacionInicio,estacionFin) * segkm;
+        }
     }
 
     /**
@@ -62,7 +72,11 @@ public class AEstrella extends EstacionesMonterrey {
      * @return
      */
     public double getDistanciaRecorridaTotal(){
-        return 0.6;
+        int dist = 0;
+        for(int i = 0; i < caminoMin.size() - 1; i++){
+            dist += getDistanciaEntreParadas(caminoMin.get(i),caminoMin.get(i+1));
+        }
+        return dist;
     }
 
     /**
@@ -71,7 +85,11 @@ public class AEstrella extends EstacionesMonterrey {
      * @return
      */
     public double getTiempoRecorridoTotal(){
-        return 0;
+        int tiempo = 0;
+        for(int i = 0; i < caminoMin.size() - 1; i++){
+            tiempo += getTiempoEntreParadas(caminoMin.get(i),caminoMin.get(i+1));
+        }
+        return tiempo;
     }
 
     /**
@@ -84,8 +102,13 @@ public class AEstrella extends EstacionesMonterrey {
         double gDistance = 0;
         double hDistance = getDistanciaEntreParadas(paradaInicial, paradaMeta);
         this.listaAbierta.put(gDistance+hDistance, paradaInicial);
+        if(this.listaAbierta.isEmpty()){
+            System.err.println("Error en lista abierta");
+        }
 
         //TODO - Implementar A*
+
+
         // Este return era solo para probar la interfaz gráfica
         return new ArrayList<Estacion>(){{
             add(MetroMonterrey.paradas.get("Talleres"));
