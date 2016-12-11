@@ -99,37 +99,62 @@ public class AEstrella extends EstacionesMonterrey {
      */
     public ArrayList<Estacion> calcularMejorCamino(){
         // Calcular distancia h y g iniciales
+        ArrayList<Estacion> resultado = new ArrayList<>();
         double gDistance = 0;
         double hDistance = getDistanciaEntreParadas(paradaInicial, paradaMeta);
         paradaInicial.sethCost((int)hDistance);
         paradaInicial.setgCost((int)gDistance);
         this.listaAbierta.put(gDistance+hDistance, paradaInicial);
+        resultado.add(paradaInicial);
         Estacion paradaActual = paradaInicial;
-        Estacion aux;
+        Estacion fMin = paradaActual;
         int i = 0;
+
+        //System.out.println("La listaAbierta es: " + listaAbierta);
+
         while(paradaActual != paradaMeta) {
             if (this.listaAbierta.isEmpty()) {
-                System.err.println("Error en lista abierta");
+                System.err.println("Error, la lista abierta está vacía");
             }
+            double fDistance = 1000000000;
             String [] estConectadas = paradaActual.getEstacionesConectadas();
-            for(int j = 0; j < estConectadas.length ; j++){
-                aux = MetroMonterrey.paradas.get(estConectadas[i]);             //hijo de paradaActual
-                aux.setgCost((int)(gDistance + getDistanciaEntreParadas(paradaActual, aux)));
-                aux.sethCost((int)(getDistanciaEntreParadas(aux, paradaMeta)));        //pongo h y g en cada Estacion
-              /*  if(gDistance + getDistanciaEntreParadas(paradaActual,aux) +     //la g de aux
-                        getDistanciaEntreParadas(aux, paradaMeta) <             //la h de aux
-                        gDistance + hDistance){                                 //la f de paradaActual
-                }   */
 
+            //System.out.println("estConectadas de " + paradaActual.getNombre() + " son: " + estConectadas.toString());
+
+            for(int j = 0; j < estConectadas.length ; j++){ //bucle para determinar las h y g de los hijos, y elegir el de menor f.
+                MetroMonterrey.paradas.get(estConectadas[j]).setgCost((int)
+                        (gDistance + getDistanciaEntreParadas(paradaActual, MetroMonterrey.paradas.get(estConectadas[j]))));
+                MetroMonterrey.paradas.get(estConectadas[j]).sethCost((int)
+                        (getDistanciaEntreParadas(MetroMonterrey.paradas.get(estConectadas[j]), paradaMeta))); //pongo h y g en cada EstConectada
+
+                //System.out.println("estamos en la parada con nombre: " + MetroMonterrey.paradas.get(estConectadas[j]).getNombre());
+
+                //System.out.println("la suma es: " + (int) (gDistance + getDistanciaEntreParadas(paradaActual, MetroMonterrey.paradas.get(estConectadas[j]))
+                //        + getDistanciaEntreParadas(MetroMonterrey.paradas.get(estConectadas[j]), paradaMeta)));
+
+                //System.out.println("fDistance es: " + fDistance);
+
+                if(((int) (gDistance + getDistanciaEntreParadas(paradaActual, MetroMonterrey.paradas.get(estConectadas[j]))
+                        + getDistanciaEntreParadas(MetroMonterrey.paradas.get(estConectadas[j]), paradaMeta)) < fDistance)
+                        && !listaAbierta.containsKey(MetroMonterrey.paradas.get(estConectadas[j])))
+                {
+                    fDistance = (int) (gDistance + getDistanciaEntreParadas(paradaActual, MetroMonterrey.paradas.get(estConectadas[j]))
+                            + getDistanciaEntreParadas(MetroMonterrey.paradas.get(estConectadas[j]), paradaMeta));
+                    fMin = MetroMonterrey.paradas.get(estConectadas[j]);
+                    //System.out.println("La fMin en la iteracion " + j + " es: " + fMin.getNombre());
+                }
             }
-            paradaActual = MetroMonterrey.paradas.get(paradaActual);
-
+            paradaActual = fMin;             //elegir el hijo con la f más pequeña
+            resultado.add(paradaActual);
+            listaAbierta.put((double)(paradaActual.getgCost() + paradaActual.gethCost()), paradaActual);
         }
 
         //TODO - Implementar A*
 
 
+        return resultado;
         // Este return era solo para probar la interfaz gráfica
+        /*
         return new ArrayList<Estacion>(){{
             add(MetroMonterrey.paradas.get("Talleres"));
             add(MetroMonterrey.paradas.get("San Bernabé"));
@@ -139,7 +164,11 @@ public class AEstrella extends EstacionesMonterrey {
             add(MetroMonterrey.paradas.get("Regina"));
             add(MetroMonterrey.paradas.get("Conchello"));
         }};
+        */
     }
-
-
+/*
+    public static void main(String[] args){
+        AEstrella a = new AEstrella(MetroMonterrey.paradas.get("Talleres"), MetroMonterrey.paradas.get("Hospital"));
+        a.calcularMejorCamino();
+    }  */
 }
