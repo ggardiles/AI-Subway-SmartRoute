@@ -92,18 +92,38 @@ public class AEstrella extends EstacionesMonterrey {
         return tiempo;
     }
 
+
     /**
      * Método que implementa el algorimo A* con las listas abiertas y cerradas
      * @return Una lista con el camino óptimo
      */
     public ArrayList<Estacion> calcularMejorCamino(){
-
         // Calcular distancia h y g iniciales
         double gDistance = 0;
         double hDistance = getDistanciaEntreParadas(paradaInicial, paradaMeta);
+        paradaInicial.sethCost((int)hDistance);
+        paradaInicial.setgCost((int)gDistance);
         this.listaAbierta.put(gDistance+hDistance, paradaInicial);
-        if(this.listaAbierta.isEmpty()){
-            System.err.println("Error en lista abierta");
+        Estacion paradaActual = paradaInicial;
+        Estacion aux;
+        int i = 0;
+        while(paradaActual != paradaMeta) {
+            if (this.listaAbierta.isEmpty()) {
+                System.err.println("Error en lista abierta");
+            }
+            String [] estConectadas = paradaActual.getEstacionesConectadas();
+            for(int j = 0; j < estConectadas.length ; j++){
+                aux = MetroMonterrey.paradas.get(estConectadas[i]);             //hijo de paradaActual
+                aux.setgCost((int)(gDistance + getDistanciaEntreParadas(paradaActual, aux)));
+                aux.sethCost((int)(getDistanciaEntreParadas(aux, paradaMeta)));        //pongo h y g en cada Estacion
+              /*  if(gDistance + getDistanciaEntreParadas(paradaActual,aux) +     //la g de aux
+                        getDistanciaEntreParadas(aux, paradaMeta) <             //la h de aux
+                        gDistance + hDistance){                                 //la f de paradaActual
+                }   */
+
+            }
+            paradaActual = MetroMonterrey.paradas.get(paradaActual);
+
         }
 
         //TODO - Implementar A*
