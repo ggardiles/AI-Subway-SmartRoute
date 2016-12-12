@@ -109,7 +109,6 @@ public class AEstrella extends EstacionesMonterrey {
         caminoMin.add(paradaInicial);
         Estacion paradaActual = paradaInicial;
         Estacion fMin = paradaActual;
-        int i = 0;
         Object [] estConectadas = paradaActual.getEstacionesConectadas();
         System.out.println("La listaAbierta es: " + listaAbierta);
 
@@ -132,13 +131,6 @@ public class AEstrella extends EstacionesMonterrey {
 
                     this.listaAbierta.put((double) (paradaActual.getgCost() + paradaActual.gethCost()), MetroMonterrey.paradas.get(estConectadas[j]));
                     //Metemos las analizadas en la lista abierta
-
-                    //System.out.println("estamos en la parada con nombre: " + MetroMonterrey.paradas.get(estConectadas[j]).getNombre());
-
-                    //System.out.println("la suma es: " + (int) (gDistance + getDistanciaEntreParadas(paradaActual, MetroMonterrey.paradas.get(estConectadas[j]))
-                      //      + getDistanciaEntreParadas(MetroMonterrey.paradas.get(estConectadas[j]), paradaMeta)));
-
-                    //System.out.println("fDistance es: " + (int) fDistance);
 
                     if (((int) (gDistance + getDistanciaEntreParadas(paradaActual, MetroMonterrey.paradas.get(estConectadas[j]))
                             + getDistanciaEntreParadas(MetroMonterrey.paradas.get(estConectadas[j]), paradaMeta)) <= (int) fDistance)
@@ -164,7 +156,58 @@ public class AEstrella extends EstacionesMonterrey {
 
         }
 
+        caminoMin = devuelveCamino();
+
         return caminoMin;
+    }
+
+    public ArrayList<Estacion> devuelveCamino(){
+        ArrayList<Estacion> resultado = new ArrayList<>();
+        Estacion aux = paradaInicial;
+        paradaInicial = paradaMeta;
+        paradaMeta = paradaInicial;
+        aux = paradaInicial;
+        Estacion fMin = aux;
+
+        double gDistance = 0;
+        double hDistance = getDistanciaEntreParadas(paradaInicial, paradaMeta);
+        Object [] estConectadas = aux.getEstacionesConectadas();
+
+        while (aux != paradaMeta){
+            double fDistance = 2 * (getDistanciaEntreParadas(MetroMonterrey.paradas.get("Talleres"), MetroMonterrey.paradas.get("Exposición")));
+            //String [] estConectadas = paradaActual.getEstacionesConectadas();
+            estConectadas = unirArrays(estConectadas,aux.getEstacionesConectadas());
+
+
+            for(int j = 0; j < estConectadas.length ; j++) { //bucle para determinar las h y g de los hijos, y elegir el de menor f.
+               // if (!this.listaCerrada.containsValue(MetroMonterrey.paradas.get(estConectadas[j]))) {
+                    MetroMonterrey.paradas.get(estConectadas[j]).setgCost((int)
+                            (gDistance + getDistanciaEntreParadas(aux, MetroMonterrey.paradas.get(estConectadas[j]))));
+                    MetroMonterrey.paradas.get(estConectadas[j]).sethCost((int)
+                            (getDistanciaEntreParadas(MetroMonterrey.paradas.get(estConectadas[j]), paradaMeta))); //pongo h y g en cada EstConectada
+
+                    //this.listaAbierta.put((double) (aux.getgCost() + aux.gethCost()), MetroMonterrey.paradas.get(estConectadas[j]));
+                    //Metemos las analizadas en la lista abierta
+
+                    if (((int) (gDistance + getDistanciaEntreParadas(aux, MetroMonterrey.paradas.get(estConectadas[j]))
+                            + getDistanciaEntreParadas(MetroMonterrey.paradas.get(estConectadas[j]), paradaMeta)) <= (int) fDistance)
+                            && !this.listaCerrada.containsKey(MetroMonterrey.paradas.get(estConectadas[j]))) {
+                        fDistance = (gDistance + getDistanciaEntreParadas(aux, MetroMonterrey.paradas.get(estConectadas[j]))
+                                + getDistanciaEntreParadas(MetroMonterrey.paradas.get(estConectadas[j]), paradaMeta));
+                        fMin = MetroMonterrey.paradas.get(estConectadas[j]);
+
+                    }
+                //}
+            }
+            aux = fMin;             //elegir el hijo con la f más pequeña
+
+            if(!resultado.contains(aux)) {
+                resultado.add(aux);
+            }
+
+        }
+
+        return resultado;
     }
 
     public Object[] unirArrays (Object [] array1, Object[] array2){
