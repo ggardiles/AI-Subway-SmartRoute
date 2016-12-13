@@ -1,3 +1,5 @@
+import sun.awt.image.ImageWatched;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -154,10 +156,10 @@ public class AEstrella extends EstacionesMonterrey {
                 }
             }
 
-            if(t>1){
+            if(t>2){
                 transbordos.add(actual);
-                System.out.println("Tiene  varias conectdas"+transbordos.getFirst().getNombre()+transbordos.size());
-
+                System.out.println("Tiene  varias conectadas  "+transbordos.getFirst().getNombre()+transbordos.size());
+                System.out.println("Meto en transbordo a: " + actual.getNombre());
                 //tiene mas de una que esta conectada
             }
             // no tiene mas conectadas
@@ -165,7 +167,6 @@ public class AEstrella extends EstacionesMonterrey {
                 System.out.println("No es la ultima y no es igual");
                 while(!transbordos.getFirst().getNombre().equals(camino.getLast().getNombre())){
                     System.out.println("ESTAMOS AQUUIII "+camino.removeLast().getNombre());
-
                 }
 //				String conectados2[] = transbordos.getFirst().getEstacionesConectadas();
 //				for(int n=0 ; n<conectados2.length;n++){
@@ -214,6 +215,7 @@ public class AEstrella extends EstacionesMonterrey {
             }
         }
 
+
     }
     public ArrayList<Estacion> calcularMejorCamino(){
 
@@ -252,7 +254,7 @@ public class AEstrella extends EstacionesMonterrey {
 
         int i = 0;
 
-        Object [] estConectadas = paradaActual.getEstacionesConectadas();
+        String [] estConectadas = paradaActual.getEstacionesConectadas();
         // System.out.println("La listaAbierta es: " + listaAbierta);
 
         while(paradaActual != paradaMeta) {
@@ -327,43 +329,36 @@ public class AEstrella extends EstacionesMonterrey {
         caminoMinimo(transbordo,camino,caminoMin,paradaInicial);
 
 
-        return caminoMin;
+        return aAL(camino,new ArrayList<Estacion>());
     }
 
 
-
-
-
-
-
-
-
-    public Object[] unirArrays (Object [] array1, Object[] array2){
-        ArrayList<Object> resul = new ArrayList<>();
-        for(int i = 0; i < array2.length; i++){
-            if(!this.listaCerrada.containsValue(array2[i].toString())) {
-                resul.add(array2[i]);
-            }
+    public ArrayList<Estacion> aAL (LinkedList<Estacion> lista, ArrayList<Estacion> listaResultado){
+        for(int i = 0; i<lista.size(); i++){
+            listaResultado.add(lista.get(i));
         }
-        for(int i =0; i < array1.length; i++){
-            if(!this.listaCerrada.containsValue(array1[i].toString())) {
-                resul.add(array1[i]);
-            }
-        }
-        return resul.toArray();
+        return listaResultado;
     }
 
-
-
-
-
+    public String[] unirArrays (String [] array1, String[] array2){
+        String [] array = new String[array1.length + array2.length];
+        int n;
+        for(n = 0; n < array1.length; n++){
+            array[n] = array1[n];
+        }
+        while(n < array.length){
+            array[n] = array2[n];
+        }
+        return array;
+    }
 
 
 
 
     public static void main(String[] args){
         AEstrella a = new AEstrella(MetroMonterrey.paradas.get("Adolfo Prieto"), MetroMonterrey.paradas.get("Sendero"));
-        a.calcularMejorCamino();
+        ArrayList<Estacion> c = a.calcularMejorCamino();
+        System.out.println(c);
     }
 
 
