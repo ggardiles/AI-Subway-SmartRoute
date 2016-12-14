@@ -230,15 +230,4 @@ public class AEstrella {
         return getDistanciaEntreParadas(estacionInicio,estacionFin) / kmPerH;
     }
 
-    public static void main(String[] args){
-        AEstrella a = new AEstrella(MetroMonterrey.paradas.get("Adolfo Prieto"),
-                MetroMonterrey.paradas.get("Sendero"));
-
-        ArrayList<Estacion> c = a.getMejorCamino();
-        double dist = a.getDistanciaRecorridaTotal();
-        double time = a.getTiempoRecorridoTotal();
-        System.out.println(c);
-    }
-
-
 }

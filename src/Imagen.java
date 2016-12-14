@@ -50,11 +50,8 @@ public class Imagen extends JPanel{
 			else if(i.getLinea() == 3)
 				g.setColor(Color.PINK);
 
-			if (i.isTransbordo()){
-				g.fillRect(i.getxPos(), i.getyPos(), RADIUS, RADIUS);
-			}else{
-				g.fillOval(i.getxPos(), i.getyPos(), RADIUS, RADIUS);
-			}
+			g.fillOval(i.getxPos(), i.getyPos(), RADIUS, RADIUS);
+
 		}
 	}
 
