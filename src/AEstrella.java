@@ -1,11 +1,6 @@
 import sun.awt.image.ImageWatched;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Objects;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * Created by gabriel on 25/11/16.
@@ -27,8 +22,7 @@ public class AEstrella extends EstacionesMonterrey {
     private double segkm = 115; //segundos en recorrer 1 km
     private double segTransbordo; //segundos que gastamos en un transbordo
 
-    public AEstrella(){
-    }
+    public AEstrella(){}
 
     public AEstrella(Estacion paradaInicial, Estacion paradaMeta) {
 
@@ -49,8 +43,8 @@ public class AEstrella extends EstacionesMonterrey {
      * @return Kms recorrido entre dos estaciones específicas
      */
     public double getDistanciaEntreParadas(Estacion estacionInicio, Estacion estacionFin){
-        double distanciaI = (estacionInicio.getxPos()-estacionFin.getxPos()) * 111145.91;
-        double distanciaJ = (estacionInicio.getyPos()-estacionFin.getyPos()) * 78254.86;
+        double distanciaI = (estacionInicio.getxPos()-estacionFin.getxPos()) * 11114.591;
+        double distanciaJ = (estacionInicio.getyPos()-estacionFin.getyPos()) * 7825.486;
         return Math.sqrt(Math.pow(distanciaI, 2) + Math.pow(distanciaJ,2)) /1000 ;
     }
 
@@ -70,9 +64,6 @@ public class AEstrella extends EstacionesMonterrey {
             return getDistanciaEntreParadas(estacionInicio,estacionFin) * segkm;
         }
     }
-
-
-
 
     /**
      * Método que calcula la distancia recorrida estacion por estación hasta llegar
@@ -103,257 +94,114 @@ public class AEstrella extends EstacionesMonterrey {
 
 
 
-    public ArrayList<Estacion> caminoMinimo(ArrayList<Estacion> camino, Estacion Final,ArrayList<Estacion> caminoMinimo){
 
-        Estacion siguiente =null;
-        String conectados[];
-        conectados = Final.getEstacionesConectadas();
-        //lista array de conectados
-        System.out.println(conectados.toString());
-        for(int i =0; i < conectados.length;i++){
-            //bucle para recorrer lista Camino
-
-            for(int j =0; j < camino.size();j++){
-                if(camino.get(j).getNombre().equals(conectados[i]) && !caminoMinimo.contains(camino.get(j))){
-                    siguiente = camino.get(j);
-                    caminoMinimo.add(siguiente);
-
-                }
-
-
-
-            }
-        }
-
-        //	System.out.println(" s "+siguiente.getNombre()+!siguiente.getNombre().equals("Los Ángeles")+paradaInicial.getNombre());
-
-        if(!siguiente.getNombre().equals(paradaInicial.getNombre())){
-
-            caminoMinimo(camino,siguiente,caminoMinimo);
-
-        }
-
-
-        return camino;
-
-    }
     /**
      * Método que implementa el algorimo A* con las listas abiertas y cerradas
      * @return Una lista con el camino óptimo
 
      *
      */
-
-    public void caminoMinimo (LinkedList <Estacion>transbordos, LinkedList <Estacion> camino,ArrayList<Estacion> caminoMin,Estacion actual ){
-        String conectadas [] = 	actual.getEstacionesConectadas();
-        //Tiene varios caminos a explorar
-        if(!actual.getNombre().equals(paradaInicial)){
-            int t = 0;
-            for(int k =0; k<conectadas.length;k++){
-                if( caminoMin.contains(MetroMonterrey.paradas.get(conectadas[k]))){
-                    t++;
-
-                }
-            }
-
-            if(t>2){
-                transbordos.add(actual);
-                System.out.println("Tiene  varias conectadas  "+transbordos.getFirst().getNombre()+transbordos.size());
-                System.out.println("Meto en transbordo a: " + actual.getNombre());
-                //tiene mas de una que esta conectada
-            }
-            // no tiene mas conectadas
-            if( !actual.equals(paradaInicial) && t == 0){
-                System.out.println("No es la ultima y no es igual");
-                while(!transbordos.getFirst().getNombre().equals(camino.getLast().getNombre())){
-                    System.out.println("ESTAMOS AQUUIII "+camino.removeLast().getNombre());
-                }
-//				String conectados2[] = transbordos.getFirst().getEstacionesConectadas();
-//				for(int n=0 ; n<conectados2.length;n++){
-//				if( caminoMin.contains(MetroMonterrey.paradas.get(conectados2[n]))){
-//					t++;
-//				}
-//				if(t==0){
-//					transbordos.removeFirst();
-//					caminoMinimo(transbordos,camino,caminoMin,actual);
-//				}
-//				}
-
-            }
-
-
-
-
-            for(int i = 0; i<conectadas.length;i++){
-
-
-                for(int j = 0; j<caminoMin.size();j++){
-                    // si esta en la lista del caminoMin y no esta en la lista del camino, se añade y se borra de caminoMin para que
-                    // no vuelva a ser explorada
-
-                    if(caminoMin.get(j).getNombre().equals(conectadas[i]) &&
-                            !camino.contains(MetroMonterrey.paradas.get(conectadas[i]))){
-                        actual = caminoMin.get(j);
-                        camino.add(actual);
-
-                        caminoMin.remove(actual);
-                        System.out.println("la Siguiente parada es"+actual.getNombre()+" "+caminoMin.size());
-
-                        if(!actual.equals(paradaMeta)){
-
-                            System.out.println("Como no es el final seguimos");
-                            caminoMinimo(transbordos,camino,caminoMin,actual);
-
-
-                        }
-
-                    }
-                }
-            }
-            for(int k =0; k<camino.size();k++){
-                System.out.println(camino.get(k).getNombre());
-            }
-        }
-
-
-    }
     public ArrayList<Estacion> calcularMejorCamino(){
-
-        // Calcular distancia h y g iniciales
-        //    	double gDistance = 0;
-        //    	double hDistance = getDistanciaEntreParadas(paradaInicial, paradaMeta);
-        //    	paradaInicial.sethCost((int)hDistance);
-        //        paradaInicial.setgCost((int)gDistance);
-        //        listaAbierta.put(paradaInicial,(gDistance+hDistance));
-        //
-        //        this.caminoMin.add(paradaInicial);
-        //
-        //
-        //    	this.caminoMinimo(paradaInicial, paradaMeta, caminoMin);
+        ArrayList<String> res = new ArrayList<>();
 
         double gDistance = 0;
         double hDistance = getDistanciaEntreParadas(paradaInicial, paradaMeta);
 
-
         paradaInicial.sethCost((int)hDistance);
-
         paradaInicial.setgCost((int)gDistance);
 
-
-
         this.listaAbierta.put(gDistance+hDistance, paradaInicial);
-
         this.listaCerrada.put(gDistance+hDistance, paradaInicial);
-
-
+        this.listaAbierta.remove(gDistance+hDistance, paradaInicial);
         caminoMin.add(paradaInicial);
+        res.add(paradaInicial.getNombre());
 
         Estacion paradaActual = paradaInicial;
-
         Estacion fMin = paradaActual;
-
-        int i = 0;
 
         String [] estConectadas = paradaActual.getEstacionesConectadas();
         // System.out.println("La listaAbierta es: " + listaAbierta);
 
         while(paradaActual != paradaMeta) {
-
             if (this.listaAbierta.isEmpty()) {
-                System.err.println("Error, la lista abierta está vacía");
+                //System.err.println("Error, la lista abierta está vacía");
             }
 
-
-            // Calcular la distancia mas grande
-
+            estConectadas = paradaActual.getEstacionesConectadas();
+            //estConectadas = unirArrays(estConectadas,paradaActual.getEstacionesConectadas());
             double fDistance = 2 * (getDistanciaEntreParadas(MetroMonterrey.paradas.get("Talleres"), MetroMonterrey.paradas.get("Exposición")));
-            //String [] estConectadas = paradaActual.getEstacionesConectadas();
 
-
-            estConectadas = unirArrays(estConectadas,paradaActual.getEstacionesConectadas());
-
-            // System.out.println("estConectadas de " + paradaActual.getNombre() + " son: " + estConectadas.toString());
+            System.out.println("estConectadas de " + paradaActual.getNombre() + " son: " + estConectadas.toString());
 
             for(int j = 0; j < estConectadas.length ; j++) { //bucle para determinar las h y g de los hijos, y elegir el de menor f.
-                if (!this.listaCerrada.containsValue(MetroMonterrey.paradas.get(estConectadas[j]))) {
+                System.out.println(MetroMonterrey.paradas.get(estConectadas[j]) + MetroMonterrey.paradas.get(estConectadas[j]).getNombre() + "    " + this.listaAbierta);
+                //System.out.println("estConectadas[j] es "+ estConectadas[j] + "!this.listaAbierta.containsValue(estConectadas[j])" +!this.listaAbierta.containsValue(estConectadas[j]));
+                System.out.println("!this.listaAbierta.containsValue(MetroMonterrey.paradas.get(estConectadas[j]))" + !this.listaAbierta.containsValue(MetroMonterrey.paradas.get(estConectadas[j])));
+                if (!this.listaAbierta.containsValue(MetroMonterrey.paradas.get(estConectadas[j]))) {
                     MetroMonterrey.paradas.get(estConectadas[j]).setgCost((int)
                             (gDistance + getDistanciaEntreParadas(paradaActual, MetroMonterrey.paradas.get(estConectadas[j]))));
-
 
                     MetroMonterrey.paradas.get(estConectadas[j]).sethCost((int)
                             (getDistanciaEntreParadas(MetroMonterrey.paradas.get(estConectadas[j]), paradaMeta))); //pongo h y g en cada EstConectada
 
-                    this.listaAbierta.put((double) (paradaActual.getgCost() + paradaActual.gethCost()), MetroMonterrey.paradas.get(estConectadas[j]));
+                    this.listaAbierta.put((double) (MetroMonterrey.paradas.get(estConectadas[j]).getgCost() + MetroMonterrey.paradas.get(estConectadas[j]).gethCost()), MetroMonterrey.paradas.get(estConectadas[j]));
 
                     if (((int) (gDistance + getDistanciaEntreParadas(paradaActual, MetroMonterrey.paradas.get(estConectadas[j]))
-
-                            + getDistanciaEntreParadas(MetroMonterrey.paradas.get(estConectadas[j]), paradaMeta))
-
-
-                            <= (int) fDistance)
-
-                            && !this.listaCerrada.containsKey(MetroMonterrey.paradas.get(estConectadas[j]))) {
-
+                            + getDistanciaEntreParadas(MetroMonterrey.paradas.get(estConectadas[j]), paradaMeta)) < (int) fDistance)
+                            && !this.listaCerrada.containsValue(MetroMonterrey.paradas.get(estConectadas[j]))) {
 
                         fDistance = (gDistance + getDistanciaEntreParadas(paradaActual, MetroMonterrey.paradas.get(estConectadas[j]))
                                 + getDistanciaEntreParadas(MetroMonterrey.paradas.get(estConectadas[j]), paradaMeta));
                         fMin = MetroMonterrey.paradas.get(estConectadas[j]);
-
+                        //gDistance = gDistance + getDistanciaEntreParadas(paradaActual, MetroMonterrey.paradas.get(estConectadas[j]));
+                        System.out.println("if if, fMin es: " + fMin.getNombre() + "    " +  fDistance);
+                    }
+                    else{
+                        if (((int) (gDistance + getDistanciaEntreParadas(paradaActual, MetroMonterrey.paradas.get(estConectadas[j]))
+                                + getDistanciaEntreParadas(MetroMonterrey.paradas.get(estConectadas[j]), paradaMeta)) < (int) fDistance)
+                                && !this.listaCerrada.containsValue(MetroMonterrey.paradas.get(estConectadas[j]))) {
+                            fMin = minMap();
+                            gDistance = fMin.getgCost();
+                        }
                     }
                 }
+                else{
+                    fMin = minMap();
+                    gDistance = fMin.getgCost();
+                    System.out.println("else fMin, es: " + fMin.getNombre());
+                }
             }
-            // System.out.println("La fMin es: " + fMin.getNombre());
+            gDistance = gDistance + getDistanciaEntreParadas(paradaActual, fMin);
             paradaActual = fMin;             //elegir el hijo con la f más pequeña
+            System.out.println("LA PUTA PARADA ACUTAL ES    " + paradaActual.getNombre());
 
 
-            if(!listaCerrada.containsValue(paradaActual)) {
+            if(!this.listaCerrada.containsValue(paradaActual) /*&& this.listaAbierta.containsValue(paradaActual)*/){
                 //   System.out.println("Se añade a caminoMin: " + fMin.getNombre());
-                caminoMin.add(paradaActual);
-                this.listaCerrada.put((double) (paradaActual.getgCost() + paradaActual.gethCost()), paradaActual); //meto en listaCerrada la elegida
+                this.caminoMin.add(paradaActual);
+                res.add(paradaActual.getNombre());
             }
-
-            //    System.out.println("el camino minimo es: " + caminoMin + "\n y la listaCerrada es : " + listaCerrada);
-
-
+            this.listaAbierta.remove((double) (paradaActual.getgCost() + paradaActual.gethCost()), paradaActual);
+            this.listaCerrada.put((double) (paradaActual.getgCost() + paradaActual.gethCost()), paradaActual); //meto en listaCerrada la elegida
         }
-        ArrayList<Estacion> caminoMinimo = new ArrayList<Estacion>();
 
-        LinkedList <Estacion> camino = new LinkedList<Estacion>();
-
-        LinkedList <Estacion> transbordo = new LinkedList<Estacion>();
-        camino.add(paradaInicial);
-
-        caminoMin.remove(paradaInicial);
-
-
-        caminoMinimo(transbordo,camino,caminoMin,paradaInicial);
-
-
-        return aAL(camino,new ArrayList<Estacion>());
+        System.out.println("caminoMin es: " + res);
+        return this.caminoMin;
     }
 
-
-    public ArrayList<Estacion> aAL (LinkedList<Estacion> lista, ArrayList<Estacion> listaResultado){
-        for(int i = 0; i<lista.size(); i++){
-            listaResultado.add(lista.get(i));
+    public Estacion minMap (){
+        Set<Double> s = this.listaAbierta.keySet();
+        Object [] arr = s.toArray();
+        double peq = (double) arr[0];
+        for (int n = 0; n < arr.length ; n++){
+            double valor = (double) arr[n];
+            System.out.println("boolean   if de minMap es: " + listaAbierta.get(valor).getNombre() + "  " + !this.listaCerrada.containsKey(valor));
+            if(valor < peq && !this.listaCerrada.containsKey(valor)){
+                peq = valor;
+            }
         }
-        return listaResultado;
+        return this.listaAbierta.get(peq);
     }
-
-    public String[] unirArrays (String [] array1, String[] array2){
-        String [] array = new String[array1.length + array2.length];
-        int n;
-        for(n = 0; n < array1.length; n++){
-            array[n] = array1[n];
-        }
-        while(n < array.length){
-            array[n] = array2[n];
-        }
-        return array;
-    }
-
-
-
 
     public static void main(String[] args){
         AEstrella a = new AEstrella(MetroMonterrey.paradas.get("Adolfo Prieto"), MetroMonterrey.paradas.get("Sendero"));
