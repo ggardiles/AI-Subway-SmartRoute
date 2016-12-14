@@ -12,7 +12,7 @@ public class MetroMonterrey {
 
         put("Talleres",     new Estacion("Talleres",1,new String[]{"San Bernabé"},false,0,0,100,61));
         put("San Bernabé",  new Estacion("San Bernabé",1,new String[]{"Talleres", "Unidad Modelo"},false,0,0,143,111));
-        put("Unidad Modelo",new Estacion("Unidad Modelo",1,new String[]{"Talleres","Aztlán"},false,0,0,173,141));
+        put("Unidad Modelo",new Estacion("Unidad Modelo",1,new String[]{"San Bernabé","Aztlán"},false,0,0,173,141));
         put("Aztlán",  new Estacion("Aztlán",1,new String[]{"Unidad Modelo" , "Penitenciaría" },false,0,0,197,167));
         put("Penitenciaría",  new Estacion("Penitenciaría",1,new String[]{"Aztlán" , "Alfonso Reyes" },false,0,0,224,203));
         put("Alfonso Reyes",  new Estacion("Alfonso Reyes",1,new String[]{"Penitenciaría" , "Mitras" },false,0,0,226,239));

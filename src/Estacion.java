@@ -9,10 +9,11 @@ public class Estacion {
     private int linea;
     private String[] estacionesConectadas;
     private boolean isTransbordo;
-    private int gCost;
-    private int hCost;
+    private double gCost;
+    private double hCost;
     private int xPos; //Position in image
     private int yPos;
+    private String whoWasMyParent; //Leave blank -> will be used in AEstrella
 
     public Estacion(String nombre, int linea, String[] estacionesConectadas, boolean isTransbordo, int gCost, int hCost, int xPos, int yPos) {
         this.nombre = nombre;
@@ -57,20 +58,24 @@ public class Estacion {
         isTransbordo = transbordo;
     }
 
-    public int getgCost() {
+    public double getgCost() {
         return gCost;
     }
 
-    public void setgCost(int gCost) {
+    public void setgCost(double gCost) {
         this.gCost = gCost;
     }
 
-    public int gethCost() {
+    public double gethCost() {
         return hCost;
     }
 
-    public void sethCost(int hCost) {
+    public void sethCost(double hCost) {
         this.hCost = hCost;
+    }
+
+    public double getTotalCost(){
+        return gCost + hCost;
     }
 
     public int getxPos() {
@@ -87,5 +92,13 @@ public class Estacion {
 
     public void setyPos(int yPos) {
         this.yPos = yPos;
+    }
+
+    public String getWhoWasMyParent() {
+        return whoWasMyParent;
+    }
+
+    public void setWhoWasMyParent(String whoWasMyParent) {
+        this.whoWasMyParent = whoWasMyParent;
     }
 }

@@ -7,35 +7,30 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
-
 import java.awt.Font;
 import javax.swing.JScrollPane;
 import java.awt.Color;
-import java.awt.Graphics;
 import javax.swing.JTextField;
-//import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.SystemColor;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.stream.Collectors;
 
 
-public class InterfazGrafica extends EstacionesMonterrey {
-    private ArrayList<String> listaParadas = new ArrayList<>(MetroMonterrey.paradas.keySet());
+public class InterfazGrafica {
+
+    //Global Constants
+    private static final Color BGCOLOR = Color.LIGHT_GRAY;
+
+    // Swing Elements
     private JFrame InterfazGrafica;
     private JTextArea textAreaParadas;
-
-    private Imagen dibujo = new Imagen();
     private JTextField textTiempo;
     private JTextField textDistancia;
 
-    private static final int RADIUS = 15;
-    private static final Color BGCOLOR = Color.LIGHT_GRAY;//new Color(135, 206, 235);//Color.LIGHT_GRAY;
+    // Custom Elements
+    private ArrayList<String> listaParadas = new ArrayList<>(MetroMonterrey.paradas.keySet());
+    private Imagen dibujo = new Imagen();
+
 
     public static void main(String[] args) {
         EventQueue.invokeLater(()->{
@@ -114,12 +109,12 @@ public class InterfazGrafica extends EstacionesMonterrey {
                 Estacion estacionFinal= MetroMonterrey.paradas.get(comboBoxDestino.getSelectedItem());
 
                 AEstrella aEstrella = new AEstrella(estacionInicial, estacionFinal);
-                ArrayList<Estacion> estacionesOptimas = aEstrella.calcularMejorCamino();
+                ArrayList<Estacion> estacionesOptimas = aEstrella.getMejorCamino();
                 if (estacionesOptimas == null){
                     System.out.println("Empty estacionesOptimas");
                     return;
                 }
-                double tiempoTotal = aEstrella.getTiempoRecorridoTotal();
+                double tiempoTotal = aEstrella.getTiempoRecorridoTotal() * 60;
                 double distanciaTotal = aEstrella.getDistanciaRecorridaTotal();
                 dibujo.dibujarPuntosCamino(estacionesOptimas);
 
@@ -132,7 +127,7 @@ public class InterfazGrafica extends EstacionesMonterrey {
 
                 textAreaParadas.setText(msg);
                 textTiempo.setText(String.format("%.2f minutos", tiempoTotal));
-                textDistancia.setText(String.format("%.2f metros", distanciaTotal));
+                textDistancia.setText(String.format("%.2f km", distanciaTotal));
             }
         });
 

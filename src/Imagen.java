@@ -7,7 +7,6 @@ import javax.swing.*;
 public class Imagen extends JPanel{
 
 	private static final long serialVersionUID = 1L;
-	EstacionesMonterrey metro2 =new EstacionesMonterrey();
 	private ArrayList<Point> puntosRecorrido;
 	private ArrayList<Estacion> estacionesOptimas;
 	private final static int RADIUS = 15;
@@ -19,11 +18,12 @@ public class Imagen extends JPanel{
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				int x = e.getX();
+				//Comment-out to redebug points in image
+				/*int x = e.getX();
 				int y = e.getY();
 				System.out.println(String.format("x: %d    y:  %d",x,y));
 				puntosRecorrido.add(new Point(x, y));
-				repaint();
+				repaint();*/
 			}
 		});
 	}
@@ -50,7 +50,11 @@ public class Imagen extends JPanel{
 			else if(i.getLinea() == 3)
 				g.setColor(Color.PINK);
 
-			g.fillOval(i.getxPos(), i.getyPos(), RADIUS, RADIUS);
+			if (i.isTransbordo()){
+				g.fillRect(i.getxPos(), i.getyPos(), RADIUS, RADIUS);
+			}else{
+				g.fillOval(i.getxPos(), i.getyPos(), RADIUS, RADIUS);
+			}
 		}
 	}
 
