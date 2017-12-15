@@ -1,6 +1,9 @@
 #Ignorar Archivos IntelliJ
 .idea
+.vscode
 
 #Compilaciones
 output
 **/*.class
+*.iml
+out
